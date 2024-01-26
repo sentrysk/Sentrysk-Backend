@@ -20,6 +20,8 @@ from SystemInstalledApps.routes import sys_apps_bp
 from SystemServices.routes import sys_srvc_bp
 from SystemLastLogons.routes import sys_last_logons_bp
 from InformationalData.routes import inf_data_bp
+
+import socket
 ##############################################################################
 
 # Configs
@@ -73,6 +75,15 @@ def test_mongodb():
         print('MongoDB connection successful!')
     except Exception as e:
         print(f'MongoDB connection failed: {e}')
+##############################################################################
+
+
+# Put Header Server Hostname
+##############################################################################
+@app.after_request
+def add_server_header(response):
+    response.headers['X-Server'] = socket.gethostname()
+    return response
 ##############################################################################
 
 
