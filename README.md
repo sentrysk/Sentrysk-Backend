@@ -2,6 +2,13 @@
 
 - The dashboard collect and show info
 
+# How to Run
+
+- Step 1 : Download the Repo
+```
+git clone https://github.com/sentrysk/Sentrysk-Backend
+```
+
 # Agents
 In this section you can create,update,delete,list **Agents**
 
