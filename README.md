@@ -23,7 +23,9 @@ USERNAME = admin
 PASSWORD = your_mongo_admin_password
 ```
 
-# Agents
+# Endpoints
+
+## Agents
 In this section you can create,update,delete,list **Agents**
 
 Endpoint prefix: **/agent**
@@ -31,13 +33,13 @@ Endpoint prefix: **/agent**
 | Action      | Endpoint | Method |
 | ----------- | ----------- | ----------- |
 | Get         | /           | GET |
-| Get by ID   | /id         | GET |
+| Get by ID   | /<id>         | GET |
 | Create      | /register   | POST |
 | Delete      | /<id>       | DELETE |
 | Update      | /<id>       | PUT |
 
 
-# Users
+## Users
 In this section you can register,login,logout **Users**
 
 Endpoint prefix: **/user**
@@ -45,18 +47,25 @@ Endpoint prefix: **/user**
 | Action      | Endpoint | Method |
 | ----------- | ----------- | ----------- |
 | Get         | /           | GET |
-| Get by ID   | /id         | GET |
+| Get by ID   | /<id>         | GET |
 | Register    | /register   | POST |
 | Login       | /register   | POST |
 | Logout      | /logout     | POST |
 
-# System Data
-In this section you can register and list **System Data**
+## System Information
+In this section you can register and list **System Information** like 
+- CPU
+- RAM
+- OS
+- DOMAIN
+- MEMORY
+- NETWORK INTERFACES
 
 Endpoint prefix: **/data**
 
 | Action      | Endpoint | Method |
 | ----------- | ----------- | ----------- |
 | Get All     | /           | GET |
-| Get by ID   | /id         | GET |
+| Get by Agent ID   | /<agent_id>         | GET |
 | Register    | /           | POST |
+| Get Changelog by ID    | /<sys_info_id>/changelog           | GET |
