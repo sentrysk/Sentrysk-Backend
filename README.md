@@ -61,7 +61,7 @@ In this section you can register and list **System Information** like
 - MEMORY
 - NETWORK INTERFACES
 
-Endpoint prefix: **/data**
+Endpoint prefix: **/sysinfo**
 
 | Action      | Endpoint | Method |
 | ----------- | ----------- | ----------- |
