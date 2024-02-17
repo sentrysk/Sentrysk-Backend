@@ -4,7 +4,7 @@
 ##############################################################################
 from mongoengine import (
     Document, DictField, ReferenceField, DateTimeField, ListField,
-    EmbeddedDocument, EmbeddedDocumentField, StringField
+    EmbeddedDocument, EmbeddedDocumentField, StringField, BooleanField
 )
 from Agents.models import Agent
 from datetime import datetime
@@ -35,6 +35,7 @@ class PipPackage(EmbeddedDocument):
 
 class InstalledPipPackages(Document):
     agent           = ReferenceField(Agent)
+    is_installed    = BooleanField()
     pip_packages    = ListField(EmbeddedDocumentField(PipPackage))
     updated         = DateTimeField(default=datetime.utcnow)
 

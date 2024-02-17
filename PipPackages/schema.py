@@ -15,5 +15,6 @@ class PipPackageSchema(Schema):
 # Register Schema
 ##############################################################################
 class RegisterSchema(Schema):
+    is_installed = fields.Boolean(required=True)
     pip_packages = fields.List(fields.Nested(PipPackageSchema))
 ##############################################################################
