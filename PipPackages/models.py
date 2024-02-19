@@ -44,8 +44,8 @@ class InstalledPipPackages(Document):
         if not isinstance(other, InstalledPipPackages):
             raise ValueError("Comparison should be done with another InstalledPipPackages instance")
 
-        self_pip_pkgs = {pip_pkg.name: pip_pkg for pip_pkg in self.pip_pkgs}
-        other_pip_pkgs = {pip_pkg.name: pip_pkg for pip_pkg in other.pip_pkgs}
+        self_pip_pkgs = {pip_pkg.name: pip_pkg for pip_pkg in self.pip_packages}
+        other_pip_pkgs = {pip_pkg.name: pip_pkg for pip_pkg in other.pip_packages}
 
         # Newly Added pip_pkgs
         new_pip_pkgs = [pip_pkg.serialize() for name, pip_pkg in other_pip_pkgs.items() if name not in self_pip_pkgs]
@@ -79,6 +79,7 @@ class InstalledPipPackages(Document):
         return {
             "id":str(self.id),
             "agent_id":str(self.agent.id),
+            "installed": self.is_installed,
             "pip_packages":serialized_pip_packages,
             "updated":self.updated
         }
