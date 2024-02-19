@@ -70,7 +70,7 @@ def register():
 
                 # Create a new ChangeLog entry
                 change_log_entry = ChangeLogInstalledPipPackages(
-                    pip_pkgs = pip_pkgs.id,
+                    pip_packages = pip_pkgs.id,
                     changes = changes
                 )
                 change_log_entry.save()
