@@ -79,7 +79,7 @@ class InstalledPipPackages(Document):
         return {
             "id":str(self.id),
             "agent_id":str(self.agent.id),
-            "installed": self.is_installed,
+            "is_installed": self.is_installed,
             "pip_packages":serialized_pip_packages,
             "updated":self.updated
         }
