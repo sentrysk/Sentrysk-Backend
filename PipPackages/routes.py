@@ -22,6 +22,18 @@ sys_pip_pkgs_bp = Blueprint('sys_pip_pkgs_blueprint', __name__)
 # Routes
 ##############################################################################
 
+# Get All Pip Packages from All Agents
+@sys_pip_pkgs_bp.route('/', methods=['GET'])
+@auth_token_required
+def get_all_installed_pip_packages():
+    try:
+        # Get All Pip Packages from DB
+        all_pip_pkgs = InstalledPipPackages.objects()
+        # Serialize & Return
+        return [info.serialize() for info in all_pip_pkgs] 
+    except Exception as e:
+        return jsonify({"error":str(e)}), 500
+
 # Register
 @sys_pip_pkgs_bp.route('/', methods=['POST'])
 @agent_token_required
