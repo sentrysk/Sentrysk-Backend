@@ -34,6 +34,18 @@ def get_all_installed_pip_packages():
     except Exception as e:
         return jsonify({"error":str(e)}), 500
 
+# Get All Pip Packages by Agent ID
+@sys_pip_pkgs_bp.route('/<agent_id>', methods=['GET'])
+@auth_token_required
+def get_pip_packages_by_agent_id(agent_id):
+    try:
+        # Get All Pip Packages by Agent ID & Serialize
+        pip_pkgs = InstalledPipPackages.objects(agent=agent_id).first().serialize()
+        # Return the Pip Packages
+        return jsonify(pip_pkgs)
+    except Exception as e:
+        return jsonify({"Message":str(e)}), 404
+
 # Register
 @sys_pip_pkgs_bp.route('/', methods=['POST'])
 @agent_token_required
