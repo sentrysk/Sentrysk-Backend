@@ -120,4 +120,16 @@ def register():
         }
     ), 200
 
+# Changelog Routes
+
+# Get All Changelog Data by Pip Packages ID
+@sys_pip_pkgs_bp.route('/<pip_pkgs_id>/changelog', methods=['GET'])
+@auth_token_required
+def get_pip_pkgs_changelog_by_pip_pkgs_id(pip_pkgs_id):
+    try:
+        pip_pkgs_changelog = ChangeLogInstalledPipPackages.objects(pip_packages=pip_pkgs_id)
+        return [info.serialize() for info in pip_pkgs_changelog] # Serialize & Return
+    except Exception as e:
+        print(e)
+        return jsonify({"Message":"Not Found"}), 404
 ##############################################################################
