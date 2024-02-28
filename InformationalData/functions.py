@@ -8,6 +8,7 @@ from SystemLastLogons.models import SystemLastLogons
 from Agents.models import Agent
 from SystemInstalledApps.models import SystemInstalledApps
 from SystemServices.models import SystemServices
+from PipPackages.models import InstalledPipPackages
 
 ##############################################################################
 
@@ -158,6 +159,37 @@ def get_all_services_count():
             all_services_count = all_services_count + agnt_srvcs_cnt
 
         return all_services_count
+    except Exception as e:
+        return 0
+##############################################################################
+    
+# Get Installed Pip Packages Count By Agent ID
+##############################################################################
+def get_sys_pip_pkgs_count_by_agent_id(agent_id):
+    try:
+        # Get System Users
+        sys_pip_pkgs = InstalledPipPackages.objects(agent=agent_id).first()
+        # If exist
+        if sys_pip_pkgs:
+            return len(sys_pip_pkgs.pip_packages)
+        return 0
+    except Exception as e:
+        return 0
+##############################################################################
+    
+# Get All Pip Packages
+##############################################################################
+def get_all_pip_pkgs_count():
+    try:
+        # Get All Agents
+        agents = Agent.objects()
+        # Pip Packages
+        all_pip_pkgs_count = 0
+        for agent in agents:
+            agnt_inst_app_cnt = get_sys_pip_pkgs_count_by_agent_id(agent.id)
+            all_pip_pkgs_count = all_pip_pkgs_count + agnt_inst_app_cnt
+
+        return all_pip_pkgs_count
     except Exception as e:
         return 0
 ##############################################################################
