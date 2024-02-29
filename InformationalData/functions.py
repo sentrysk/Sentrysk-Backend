@@ -177,19 +177,3 @@ def get_sys_pip_pkgs_count_by_agent_id(agent_id):
         return 0
 ##############################################################################
     
-# Get All Pip Packages
-##############################################################################
-def get_all_pip_pkgs_count():
-    try:
-        # Get All Agents
-        agents = Agent.objects()
-        # Pip Packages
-        all_pip_pkgs_count = 0
-        for agent in agents:
-            agnt_inst_app_cnt = get_sys_pip_pkgs_count_by_agent_id(agent.id)
-            all_pip_pkgs_count = all_pip_pkgs_count + agnt_inst_app_cnt
-
-        return all_pip_pkgs_count
-    except Exception as e:
-        return 0
-##############################################################################
