@@ -157,7 +157,8 @@ def get_homepage_statistics():
         "agent_count": str(get_agent_count()),
         "installed_apps_count": str(get_all_installed_apps_count()),
         "sys_user_count": str(get_all_sys_user_count()),
-        "services_count": str(get_all_services_count())
+        "services_count": str(get_all_services_count()),
+        "pip_packages_count": str(get_all_pip_pkgs_count())
     })
 
 ##############################################################################
