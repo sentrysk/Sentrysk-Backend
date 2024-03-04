@@ -57,7 +57,7 @@ app.register_blueprint(sys_users_bp, url_prefix='/sysusers')
 app.register_blueprint(sys_last_logons_bp, url_prefix='/sysusers/lastlogons')
 app.register_blueprint(sys_apps_bp, url_prefix='/sysapps')
 app.register_blueprint(sys_srvc_bp, url_prefix='/sysservices')
-app.register_blueprint(sys_srvc_bp, url_prefix='/pippkgs')
+app.register_blueprint(sys_pip_pkgs_bp, url_prefix='/pippkgs')
 
 app.register_blueprint(inf_data_bp, url_prefix='/inf_data')
 ##############################################################################
