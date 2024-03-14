@@ -3,8 +3,11 @@
 # Libraries
 ##############################################################################
 from mongoengine import (
-    EmbeddedDocument, StringField
+    Document, DictField, ReferenceField, DateTimeField, ListField,
+    EmbeddedDocument, EmbeddedDocumentField, StringField, BooleanField
 )
+from Agents.models import Agent
+from datetime import datetime
 ##############################################################################
 
 
@@ -29,4 +32,10 @@ class NpmPackage(EmbeddedDocument):
 
     def __str__(self):
         return str(self.serialize())
+    
+class InstalledNpmPackages(Document):
+    agent           = ReferenceField(Agent)
+    is_installed    = BooleanField()
+    npm_packages    = ListField(EmbeddedDocumentField(NpmPackage))
+    updated         = DateTimeField(default=datetime.utcnow)
 ##############################################################################
