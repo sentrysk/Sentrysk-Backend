@@ -38,4 +38,21 @@ class InstalledNpmPackages(Document):
     is_installed    = BooleanField()
     npm_packages    = ListField(EmbeddedDocumentField(NpmPackage))
     updated         = DateTimeField(default=datetime.utcnow)
+
+    def serialize(self):
+        # Serialize All NpmPackages
+        serialized_npm_packages = []
+        for npm_pkg in self.npm_packages:
+            serialized_npm_packages.append(npm_pkg.serialize())
+        
+        return {
+            "id":str(self.id),
+            "agent_id":str(self.agent.id),
+            "is_installed": self.is_installed,
+            "npm_packages":serialized_npm_packages,
+            "updated":self.updated
+        }
+
+    def __str__(self):
+        return str(self.serialize())
 ##############################################################################
