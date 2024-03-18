@@ -28,4 +28,16 @@ def get_all_installed_npm_packages():
     except Exception as e:
         return jsonify({"error":str(e)}), 500
 
+# Get Npm Packages by Agent ID
+@sys_npm_pkgs_bp.route('/<agent_id>', methods=['GET'])
+@auth_token_required
+def get_npm_packages_by_agent_id(agent_id):
+    try:
+        # Get All Npm Packages by Agent ID & Serialize
+        npm_pkgs = InstalledNpmPackages.objects(agent=agent_id).first().serialize()
+        # Return the Npm Packages
+        return jsonify(npm_pkgs)
+    except Exception as e:
+        return jsonify({"Message":str(e)}), 404
+
 ##############################################################################
