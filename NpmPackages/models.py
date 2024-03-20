@@ -86,4 +86,19 @@ class InstalledNpmPackages(Document):
 
     def __str__(self):
         return str(self.serialize())
+
+class ChangeLogInstalledNpmPackages(Document):
+    npm_packages    = ReferenceField(InstalledNpmPackages)
+    timestamp       = DateTimeField(default=datetime.utcnow)
+    changes         = DictField()
+
+    def serialize(self):
+        return {
+            "id":str(self.id),
+            "timestamp":self.timestamp,
+            "changes":self.changes
+        }
+
+    def __str__(self):
+        return str(self.serialize())
 ##############################################################################
