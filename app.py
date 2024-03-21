@@ -21,6 +21,7 @@ from SystemServices.routes import sys_srvc_bp
 from SystemLastLogons.routes import sys_last_logons_bp
 from InformationalData.routes import inf_data_bp
 from PipPackages.routes import sys_pip_pkgs_bp
+from NpmPackages.routes import sys_npm_pkgs_bp
 
 import socket
 ##############################################################################
@@ -58,6 +59,7 @@ app.register_blueprint(sys_last_logons_bp, url_prefix='/sysusers/lastlogons')
 app.register_blueprint(sys_apps_bp, url_prefix='/sysapps')
 app.register_blueprint(sys_srvc_bp, url_prefix='/sysservices')
 app.register_blueprint(sys_pip_pkgs_bp, url_prefix='/pippkgs')
+app.register_blueprint(sys_npm_pkgs_bp, url_prefix='/npmpkgs')
 
 app.register_blueprint(inf_data_bp, url_prefix='/inf_data')
 ##############################################################################
