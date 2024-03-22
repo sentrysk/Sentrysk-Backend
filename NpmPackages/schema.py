@@ -16,5 +16,5 @@ class NpmPackageSchema(Schema):
 ##############################################################################
 class RegisterSchema(Schema):
     is_installed = fields.Boolean(required=True)
-    pip_packages = fields.List(fields.Nested(NpmPackageSchema))
+    npm_packages = fields.List(fields.Nested(NpmPackageSchema))
 ##############################################################################
