@@ -119,4 +119,15 @@ def register():
             'message': 'Npm packages registered successfully.',
         }
     ), 200
+
+# Get All Changelog Data by Npm Packages ID
+@sys_npm_pkgs_bp.route('/<npm_pkgs_id>/changelog', methods=['GET'])
+@auth_token_required
+def get_npm_pkgs_changelog_by_npm_pkgs_id(npm_pkgs_id):
+    try:
+        npm_pkgs_changelog = ChangeLogInstalledNpmPackages.objects(npm_packages=npm_pkgs_id)
+        return [info.serialize() for info in npm_pkgs_changelog] # Serialize & Return
+    except Exception as e:
+        print(e)
+        return jsonify({"Message":"Not Found"}), 404
 ##############################################################################
