@@ -208,3 +208,20 @@ def get_sys_npm_pkgs_count_by_agent_id(agent_id):
     except Exception as e:
         return 0
 ##############################################################################
+
+# Get All NPM Packages
+##############################################################################
+def get_all_npm_pkgs_count():
+    try:
+        # Get All Agents
+        agents = Agent.objects()
+        # NPM Packages
+        all_npm_pkgs_count = 0
+        for agent in agents:
+            agnt_inst_app_cnt = get_sys_npm_pkgs_count_by_agent_id(agent.id)
+            all_npm_pkgs_count = all_npm_pkgs_count + agnt_inst_app_cnt
+
+        return all_npm_pkgs_count
+    except Exception as e:
+        return 0
+##############################################################################
