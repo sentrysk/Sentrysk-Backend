@@ -16,7 +16,8 @@ from .functions import (
     get_sys_services_count_by_agent_id,
     get_all_services_count,
     get_sys_pip_pkgs_count_by_agent_id,
-    get_all_pip_pkgs_count
+    get_all_pip_pkgs_count,
+    get_sys_npm_pkgs_count_by_agent_id
 )
 ##############################################################################
 
@@ -141,6 +142,19 @@ def pip_pkgs_count_by_agent_id(agent_id):
 def all_pip_pkgs_count():  
     return jsonify({
         "pip_packages_count": str(get_all_pip_pkgs_count())
+    })
+
+##############################################################################
+
+# About Npm Packages
+##############################################################################
+
+# Get Installed Npm Packages Count by Agent ID
+@inf_data_bp.route('/npm_pkgs_count/<agent_id>', methods=['GET'])
+@auth_token_required
+def npm_pkgs_count_by_agent_id(agent_id):  
+    return jsonify({
+        "npm_packages_count": str(get_sys_npm_pkgs_count_by_agent_id(agent_id))
     })
 
 ##############################################################################
