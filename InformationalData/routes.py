@@ -182,7 +182,8 @@ def get_homepage_statistics():
         "installed_apps_count": str(get_all_installed_apps_count()),
         "sys_user_count": str(get_all_sys_user_count()),
         "services_count": str(get_all_services_count()),
-        "pip_packages_count": str(get_all_pip_pkgs_count())
+        "pip_packages_count": str(get_all_pip_pkgs_count()),
+        "npm_packages_count": str(get_all_npm_pkgs_count())
     })
 
 ##############################################################################
