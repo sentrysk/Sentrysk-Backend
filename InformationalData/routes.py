@@ -186,6 +186,18 @@ def get_homepage_statistics():
         "npm_packages_count": str(get_all_npm_pkgs_count())
     })
 
+# Agent Page Statistics
+@inf_data_bp.route('/agent/<agent_id>', methods=['GET'])
+@auth_token_required
+def get_agent_page_statistics(agent_id):
+    return jsonify({
+        "sys_user_count": str(get_sys_user_count_by_agent_id(agent_id)),
+        "sys_installed_apps_count": str(get_sys_installed_apps_count_by_agent_id(agent_id)),
+        "sys_user_count": str(get_sys_user_count_by_agent_id(agent_id)),
+        "sys_services_count": str(get_sys_services_count_by_agent_id(agent_id)),
+        "sys_pip_packages_count": str(get_sys_pip_pkgs_count_by_agent_id(agent_id)),
+        "sys_npm_packages_count": str(get_sys_npm_pkgs_count_by_agent_id(agent_id))
+    })
 ##############################################################################
 
 
