@@ -57,3 +57,22 @@ class Containers(EmbeddedDocument):
 
     def __str__(self):
         return str(self.serialize())
+    
+class Volumes(EmbeddedDocument):
+    volume_name     = StringField()
+    mountpoint       = StringField()
+    created          = DateTimeField()
+    labels           = StringField()
+
+
+    def serialize(self):
+        data = {
+            "volume_name": self.volume_name,
+            "mountpoint": self.mountpoint,
+            "created": self.created,
+            "labels": self.labels
+        }
+        return data
+
+    def __str__(self):
+        return str(self.serialize())
