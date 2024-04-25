@@ -35,6 +35,16 @@ class VolumesSchema(Schema):
     created      = fields.DateTime(required=True)
     labes        = fields.Str(required=False)
 ##############################################################################
+    
+# Networks Schema
+##############################################################################
+class NetworksSchema(Schema):
+    network_id   = fields.Str(required=True)
+    name         = fields.Str(required=True)
+    driver       = fields.Str(required=False)
+    created      = fields.DateTime(required=True)
+    labes        = fields.Str(required=False)
+##############################################################################
 
 # Register Schema
 ##############################################################################
@@ -43,4 +53,5 @@ class RegisterSchema(Schema):
     images          = fields.List(fields.Nested(ImagesSchema))
     containers      = fields.List(fields.Nested(ContainersSchema))
     volumes         = fields.List(fields.Nested(VolumesSchema))
+    networks         = fields.List(fields.Nested(NetworksSchema))
 ##############################################################################
