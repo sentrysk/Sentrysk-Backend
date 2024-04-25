@@ -5,15 +5,19 @@
 from marshmallow import Schema, fields
 ##############################################################################
 
-# NpmPackage Schema
+# Images Schema
 ##############################################################################
 class ImagesSchema(Schema):
-    name         = fields.Str(required=True)
-    version      = fields.Str(required=True)
+    image_id     = fields.Str(required=True)
+    tags         = fields.Str(required=False)
+    size         = fields.Str(required=True)
+    created      = fields.DateTime(required=True)
+    labes        = fields.Str(required=False)
 ##############################################################################
 
 # Register Schema
 ##############################################################################
 class RegisterSchema(Schema):
-    is_installed = fields.Boolean(required=True)
+    is_installed    = fields.Boolean(required=True)
+    images          = fields.List(fields.Nested(ImagesSchema))
 ##############################################################################
