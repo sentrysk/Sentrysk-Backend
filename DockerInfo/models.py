@@ -94,3 +94,30 @@ class Networks(EmbeddedDocument):
 
     def __str__(self):
         return str(self.serialize())
+    
+# Docker Info Model
+class DockerInfo(Document):
+    agent           = ReferenceField(Agent)
+    is_installed    = BooleanField()
+    images          = ListField(EmbeddedDocumentField(Images))
+    containers      = ListField(EmbeddedDocumentField(Containers))
+    volumes         = ListField(EmbeddedDocumentField(Volumes))
+    networks        = ListField(EmbeddedDocumentField(Networks))
+    disk_usage      = StringField()
+    updated         = DateTimeField(default=datetime.utcnow)
+
+    def serialize(self):
+        return {
+            "id": str(self.id),
+            "agent_id": str(self.agent.id),
+            "is_installed": self.is_installed,
+            "images": self.images,
+            "containers": self.containers,
+            "volumes": self.volumes,
+            "networks": self.networks,
+            "disk_usage": self.disk_usage,
+            "updated":self.updated
+        }
+
+    def __str__(self):
+        return str(self.serialize())
