@@ -26,6 +26,15 @@ class ContainersSchema(Schema):
     created      = fields.DateTime(required=True)
     labes        = fields.Str(required=False)
 ##############################################################################
+    
+# Volumes Schema
+##############################################################################
+class VolumesSchema(Schema):
+    volume_name  = fields.Str(required=True)
+    mountpoint   = fields.Str(required=False)
+    created      = fields.DateTime(required=True)
+    labes        = fields.Str(required=False)
+##############################################################################
 
 # Register Schema
 ##############################################################################
@@ -33,4 +42,5 @@ class RegisterSchema(Schema):
     is_installed    = fields.Boolean(required=True)
     images          = fields.List(fields.Nested(ImagesSchema))
     containers      = fields.List(fields.Nested(ContainersSchema))
+    volumes         = fields.List(fields.Nested(VolumesSchema))
 ##############################################################################
