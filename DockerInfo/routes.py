@@ -41,7 +41,7 @@ def get_docker_info_by_agent_id(agent_id):
     try:
         # Get Docker Info by Agent ID & Serialize
         docker_info = DockerInfo.objects(agent=agent_id).first().serialize()
-        # Return the Npm Packages
+        # Return Docker Info
         return jsonify(docker_info)
     except Exception as e:
         return jsonify({"Message":str(e)}), 404
