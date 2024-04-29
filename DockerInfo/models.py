@@ -13,6 +13,8 @@ from datetime import datetime
 
 # Models
 ##############################################################################
+
+# Docker Images Model
 class Images(EmbeddedDocument):
     image_id        = StringField()
     tags            = StringField()
@@ -32,7 +34,8 @@ class Images(EmbeddedDocument):
 
     def __str__(self):
         return str(self.serialize())
-    
+
+# Docker Containers Model
 class Containers(EmbeddedDocument):
     container_id     = StringField()
     image            = StringField()
@@ -56,7 +59,8 @@ class Containers(EmbeddedDocument):
 
     def __str__(self):
         return str(self.serialize())
-    
+
+# Docker Volumes Model 
 class Volumes(EmbeddedDocument):
     volume_name      = StringField()
     mountpoint       = StringField()
@@ -74,7 +78,8 @@ class Volumes(EmbeddedDocument):
 
     def __str__(self):
         return str(self.serialize())
-    
+
+# Docker Networks Model
 class Networks(EmbeddedDocument):
     network_id       = StringField()
     name             = StringField()
@@ -137,3 +142,4 @@ class ChangeLogDockerInfo(Document):
 
     def __str__(self):
         return str(self.serialize())
+##############################################################################
