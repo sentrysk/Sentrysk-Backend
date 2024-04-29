@@ -121,3 +121,19 @@ class DockerInfo(Document):
 
     def __str__(self):
         return str(self.serialize())
+
+# Docker Info Changelog Model
+class ChangeLogDockerInfo(Document):
+    docker_info     = ReferenceField(DockerInfo)
+    timestamp       = DateTimeField(default=datetime.utcnow)
+    changes         = DictField()
+
+    def serialize(self):
+        return {
+            "id":str(self.id),
+            "timestamp":self.timestamp,
+            "changes":self.changes
+        }
+
+    def __str__(self):
+        return str(self.serialize())
