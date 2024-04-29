@@ -9,10 +9,10 @@ from marshmallow import Schema, fields
 ##############################################################################
 class ImagesSchema(Schema):
     image_id     = fields.Str(required=True)
-    tags         = fields.Str(required=False)
+    tags         = fields.List(fields.Str(),required=True)
     size         = fields.Str(required=True)
     created      = fields.DateTime(required=True)
-    labes        = fields.Str(required=False)
+    labels       = fields.Dict(required=True,allow_none=True)
 ##############################################################################
     
 # Containers Schema
@@ -21,19 +21,19 @@ class ContainersSchema(Schema):
     container_id = fields.Str(required=True)
     image        = fields.Str(required=True)
     status       = fields.Str(required=True)
-    ports        = fields.Str(required=False)
-    networks     = fields.Str(required=False)
+    ports        = fields.Dict(required=True)
+    networks     = fields.Dict(required=True)
     created      = fields.DateTime(required=True)
-    labes        = fields.Str(required=False)
+    labels       = fields.Dict(required=True,allow_none=True)
 ##############################################################################
     
 # Volumes Schema
 ##############################################################################
 class VolumesSchema(Schema):
     volume_name  = fields.Str(required=True)
-    mountpoint   = fields.Str(required=False)
+    mountpoint   = fields.Str(required=True)
     created      = fields.DateTime(required=True)
-    labes        = fields.Str(required=False)
+    labels       = fields.Dict(required=True,allow_none=True)
 ##############################################################################
     
 # Networks Schema
@@ -41,9 +41,9 @@ class VolumesSchema(Schema):
 class NetworksSchema(Schema):
     network_id   = fields.Str(required=True)
     name         = fields.Str(required=True)
-    driver       = fields.Str(required=False)
+    driver       = fields.Str(required=True)
     created      = fields.DateTime(required=True)
-    labes        = fields.Str(required=False)
+    labels       = fields.Dict(required=True,allow_none=True)
 ##############################################################################
 
 # Register Schema
