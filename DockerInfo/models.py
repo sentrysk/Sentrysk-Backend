@@ -112,14 +112,37 @@ class DockerInfo(Document):
     updated         = DateTimeField(default=datetime.utcnow)
 
     def serialize(self):
+        # Serialize Sub Models First
+
+        # Serialize Images Model
+        serialized_images = []
+        for s_images in self.images:
+            serialized_images.append(s_images.serialize())
+        
+        # Serialize Containers Model
+        serialized_containers = []
+        for s_containers in self.containers:
+            serialized_containers.append(s_containers.serialize())
+        
+        # Serialize Volumes Model
+        serialized_volumes = []
+        for s_volumes in self.volumes:
+            serialized_volumes.append(s_volumes.serialize())
+
+        # Serialize Networks Model
+        serialized_networks = []
+        for s_networks in self.networks:
+            serialized_networks.append(s_networks.serialize())
+
+        # Return Serilized Objects
         return {
             "id": str(self.id),
             "agent_id": str(self.agent.id),
             "is_installed": self.is_installed,
-            "images": self.images,
-            "containers": self.containers,
-            "volumes": self.volumes,
-            "networks": self.networks,
+            "images": serialized_images,
+            "containers": serialized_containers,
+            "volumes": serialized_volumes,
+            "networks": serialized_networks,
             "disk_usage": self.disk_usage,
             "updated":self.updated
         }
