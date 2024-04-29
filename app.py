@@ -61,7 +61,7 @@ app.register_blueprint(sys_apps_bp, url_prefix='/sysapps')
 app.register_blueprint(sys_srvc_bp, url_prefix='/sysservices')
 app.register_blueprint(sys_pip_pkgs_bp, url_prefix='/pippkgs')
 app.register_blueprint(sys_npm_pkgs_bp, url_prefix='/npmpkgs')
-app.register_blueprint(sys_npm_pkgs_bp, url_prefix='/dockerinfo')
+app.register_blueprint(sys_dckr_bp, url_prefix='/dockerinfo')
 
 app.register_blueprint(inf_data_bp, url_prefix='/inf_data')
 ##############################################################################
