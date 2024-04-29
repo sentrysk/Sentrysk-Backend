@@ -6,7 +6,7 @@ from flask import Blueprint, request, jsonify
 from datetime import datetime
 from marshmallow import ValidationError
 
-from .models import DockerInfo
+from .models import DockerInfo, ChangeLogDockerInfo
 from .schema import RegisterSchema
 from Shared.validators import agent_token_required, auth_token_required
 
@@ -68,12 +68,33 @@ def register():
     docker_info = DockerInfo.objects(agent=agent).first()
 
     if docker_info:
-        # UPDATE If System Information data already exist
-        try:
-            docker_info.update(updated=datetime.utcnow)
-        except Exception as e:
-            return jsonify({'error': e}), 500
+        # UPDATE If System Information data already exist        
         
+        # Find if any changes
+        changes = {}
+        for field, new_value in data.items():
+            if field in docker_info._data and docker_info[field] != new_value:
+                changes[field] = {
+                    'previous_value': docker_info[field],
+                    'new_value': new_value
+                }
+        
+        # If any changes
+        if changes:
+            # Update the existing Docker Info document
+            data["updated"] = datetime.utcnow
+            docker_info.update(**data)
+            
+            # Create a new ChangeLog entry
+            change_log_entry = ChangeLogDockerInfo(
+                docker_info = docker_info.id,
+                changes = changes
+            )
+            change_log_entry.save()
+        else:
+            # Apply only updated time
+            docker_info.update(updated=datetime.utcnow)
+
     else:
         # CREATE If Docker Info not exist 
         try:
