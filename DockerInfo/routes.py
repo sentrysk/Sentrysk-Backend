@@ -25,7 +25,7 @@ sys_dckr_bp = Blueprint('sys_docker_blueprint', __name__)
 # Get All Docker Infor from All Agents
 @sys_dckr_bp.route('/<agent_id>', methods=['GET'])
 @auth_token_required
-def get_docker_info_by_agent_id():
+def get_all_docker_info():
     try:
         # Get All Docker Info from DB
         all_docker_infos = DockerInfo.objects()
