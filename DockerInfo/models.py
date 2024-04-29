@@ -17,10 +17,10 @@ from datetime import datetime
 # Docker Images Model
 class Images(EmbeddedDocument):
     image_id        = StringField()
-    tags            = StringField()
+    tags            = ListField()
     size            = StringField()
     created         = DateTimeField()
-    labels          = StringField()
+    labels          = DictField()
 
     def serialize(self):
         data = {
@@ -40,10 +40,10 @@ class Containers(EmbeddedDocument):
     container_id     = StringField()
     image            = StringField()
     status           = StringField()
-    ports            = StringField()
-    networks         = StringField()
+    ports            = DictField()
+    networks         = DictField()
     created          = DateTimeField()
-    labels           = StringField()
+    labels           = DictField()
 
     def serialize(self):
         data = {
@@ -65,7 +65,7 @@ class Volumes(EmbeddedDocument):
     volume_name      = StringField()
     mountpoint       = StringField()
     created          = DateTimeField()
-    labels           = StringField()
+    labels           = DictField()
 
     def serialize(self):
         data = {
@@ -85,7 +85,7 @@ class Networks(EmbeddedDocument):
     name             = StringField()
     driver           = StringField()
     created          = DateTimeField()
-    labels           = StringField()
+    labels           = DictField()
 
     def serialize(self):
         data = {
