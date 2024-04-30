@@ -68,7 +68,7 @@ def register():
     docker_info = DockerInfo.objects(agent=agent).first()
 
     if docker_info:
-        # UPDATE If System Information data already exist        
+        # UPDATE If Docker Info data already exist     
         
         # Find if any changes
         changes = {}
@@ -109,4 +109,14 @@ def register():
             'message': 'Docker Info registered successfully.',
         }
     ), 200
+
+# Get All Changelog Data by Docker Info ID
+@sys_dckr_bp.route('/<docker_info_id>/changelog', methods=['GET'])
+@auth_token_required
+def get_docker_info_changelog_by_id(docker_info_id):
+    try:
+        docker_info_changelog = ChangeLogDockerInfo.objects(docker_info=docker_info_id)
+        return [info.serialize() for info in docker_info_changelog] # Serialize & Return
+    except Exception as e:
+        return jsonify({"Message":"Not Found"}), 404
 ##############################################################################
