@@ -10,6 +10,7 @@ from SystemInstalledApps.models import SystemInstalledApps
 from SystemServices.models import SystemServices
 from PipPackages.models import InstalledPipPackages
 from NpmPackages.models import InstalledNpmPackages
+from DockerInfo.models import DockerInfo
 
 ##############################################################################
 
@@ -222,6 +223,16 @@ def get_all_npm_pkgs_count():
             all_npm_pkgs_count = all_npm_pkgs_count + agnt_inst_app_cnt
 
         return all_npm_pkgs_count
+    except Exception as e:
+        return 0
+##############################################################################
+    
+# Get Docker Info Count
+##############################################################################
+def get_docker_info_count():
+    try:
+        # Get Docker Info Count
+        return DockerInfo.objects.count()
     except Exception as e:
         return 0
 ##############################################################################
