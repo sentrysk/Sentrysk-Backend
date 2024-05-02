@@ -227,12 +227,12 @@ def get_all_npm_pkgs_count():
         return 0
 ##############################################################################
     
-# Get Docker Info Count
+# Get Installed Docker Count
 ##############################################################################
-def get_docker_info_count():
+def get_installed_docker_count():
     try:
         # Get Docker Info Count
-        return DockerInfo.objects.count()
+        return DockerInfo.objects(is_installed=True).count()
     except Exception as e:
         return 0
 ##############################################################################
