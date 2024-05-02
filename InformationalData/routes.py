@@ -18,7 +18,8 @@ from .functions import (
     get_sys_pip_pkgs_count_by_agent_id,
     get_all_pip_pkgs_count,
     get_sys_npm_pkgs_count_by_agent_id,
-    get_all_npm_pkgs_count
+    get_all_npm_pkgs_count,
+    get_docker_info_count
 )
 ##############################################################################
 
@@ -183,7 +184,8 @@ def get_homepage_statistics():
         "sys_user_count": str(get_all_sys_user_count()),
         "services_count": str(get_all_services_count()),
         "pip_packages_count": str(get_all_pip_pkgs_count()),
-        "npm_packages_count": str(get_all_npm_pkgs_count())
+        "npm_packages_count": str(get_all_npm_pkgs_count()),
+        "docker_info_count": str(get_docker_info_count())
     })
 
 # Agent Page Statistics
