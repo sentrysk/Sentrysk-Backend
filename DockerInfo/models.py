@@ -75,6 +75,7 @@ class Containers(EmbeddedDocument):
     created          = DateTimeField()
     labels           = DictField()
 
+
     def serialize(self):
         data = {
             "container_id": self.container_id,
@@ -141,6 +142,55 @@ class DockerInfo(Document):
     disk_usage      = StringField()
     updated         = DateTimeField(default=datetime.utcnow)
 
+    def compare_docker_info(self, other):
+        if not isinstance(other, DockerInfo):
+            raise ValueError("Comparison should be done with another DockerInfo instance")
+        
+        changes = {}
+        # Check Changes on is_installed value
+        if self.is_installed != other.is_installed:
+            changes['is_installed'] = {}
+            changes['is_installed']["previous_value"] = self.is_installed
+            changes['is_installed']["new_value"] = other.is_installed
+        # Check Changes on disk_usage value
+        if self.disk_usage != other.disk_usage:
+            changes["disk_usage"] = {}
+            changes["disk_usage"]["previous_value"] = self.disk_usage
+            changes["disk_usage"]["new_value"] = other.disk_usage
+        # Check Changes on Images
+        new_images, deleted_images, updated_images = compare_documents(self.images, other.images, "image_id", Images)
+        if new_images:
+            changes["new_images"] = new_images
+        if deleted_images:
+            changes["deleted_images"] = deleted_images
+        if updated_images:
+            changes["updated_images"]  = updated_images
+        # Check Changes on Containers
+        new_containers, deleted_containers, updated_containers = compare_documents(self.containers, other.containers, "container_id", Containers)
+        if new_containers:
+            changes["new_containers"] = new_containers
+        if deleted_containers:
+            changes["deleted_containers"] = deleted_containers
+        if updated_containers:
+            changes["updated_containers"]  = updated_containers
+        # Check Changes on Volumes
+        new_volumes, deleted_volumes, updated_volumes = compare_documents(self.volumes, other.volumes, "volume_name", Volumes)
+        if new_volumes:
+            changes["new_volumes"] = new_volumes
+        if deleted_volumes:
+            changes["deleted_volumes"] = deleted_volumes
+        if updated_volumes:
+            changes["updated_volumes"]  = updated_volumes
+        # Check Changes on Networks
+        new_networks, deleted_networks, updated_networks = compare_documents(self.networks, other.networks, "network_id", Networks)
+        if new_networks:
+            changes["new_networks"] = new_networks
+        if deleted_networks:
+            changes["deleted_networks"] = deleted_networks
+        if updated_networks:
+            changes["updated_networks"]  = updated_networks
+        
+        return changes
 
     def serialize(self):
         # Serialize Sub Models First
