@@ -70,15 +70,13 @@ def register():
     if docker_info:
         # UPDATE If Docker Info data already exist     
         
+        # Create temp DockerInfo object to Compare
+        tmp_docker_info = DockerInfo(**data)
+        tmp_docker_info.agent = agent
+        tmp_docker_info.updated = docker_info.updated # For the comparing
         # Find if any changes
-        changes = {}
-        for field, new_value in data.items():
-            if field in docker_info._data and docker_info[field] != new_value:
-                changes[field] = {
-                    'previous_value': docker_info[field],
-                    'new_value': new_value
-                }
-        
+        changes = docker_info.compare_docker_info(tmp_docker_info)
+
         # If any changes
         if changes:
             # Update the existing Docker Info document
