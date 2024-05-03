@@ -52,6 +52,18 @@ class Images(EmbeddedDocument):
     created         = DateTimeField()
     labels          = DictField()
 
+    def __eq__(self, other):
+        """
+        Override the equality operator to compare Images objects.
+        """
+        return (
+            self.image_id == other.image_id and
+            self.tags == other.tags and
+            self.size == other.size and
+            self.created == other.created and
+            self.labels == other.labels
+        )
+
     def serialize(self):
         data = {
             "image_id": self.image_id,
@@ -75,6 +87,19 @@ class Containers(EmbeddedDocument):
     created          = DateTimeField()
     labels           = DictField()
 
+    def __eq__(self, other):
+        """
+        Override the equality operator to compare Containers objects.
+        """
+        return (
+            self.container_id == other.container_id and
+            self.image == other.image and
+            self.status == other.status and
+            self.ports == other.ports and
+            self.networks == other.networks and
+            self.created == other.created and
+            self.labels == other.labels
+        )
 
     def serialize(self):
         data = {
@@ -98,6 +123,17 @@ class Volumes(EmbeddedDocument):
     created          = DateTimeField()
     labels           = DictField()
 
+    def __eq__(self, other):
+        """
+        Override the equality operator to compare Volumes objects.
+        """
+        return (
+            self.volume_name == other.volume_name and
+            self.mountpoint == other.mountpoint and
+            self.created == other.created and
+            self.labels == other.labels
+        )
+
     def serialize(self):
         data = {
             "volume_name": self.volume_name,
@@ -117,6 +153,18 @@ class Networks(EmbeddedDocument):
     driver           = StringField()
     created          = DateTimeField()
     labels           = DictField()
+
+    def __eq__(self, other):
+        """
+        Override the equality operator to compare Networks objects.
+        """
+        return (
+            self.network_id == other.network_id and
+            self.name == other.name and
+            self.driver == other.driver and
+            self.created == other.created and
+            self.labels == other.labels
+        )
 
     def serialize(self):
         data = {
