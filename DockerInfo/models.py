@@ -60,7 +60,6 @@ class Images(EmbeddedDocument):
             self.image_id == other.image_id and
             self.tags == other.tags and
             self.size == other.size and
-            self.created == other.created and
             self.labels == other.labels
         )
 
@@ -97,7 +96,6 @@ class Containers(EmbeddedDocument):
             self.status == other.status and
             self.ports == other.ports and
             self.networks == other.networks and
-            self.created == other.created and
             self.labels == other.labels
         )
 
@@ -130,7 +128,6 @@ class Volumes(EmbeddedDocument):
         return (
             self.volume_name == other.volume_name and
             self.mountpoint == other.mountpoint and
-            self.created == other.created and
             self.labels == other.labels
         )
 
@@ -162,7 +159,6 @@ class Networks(EmbeddedDocument):
             self.network_id == other.network_id and
             self.name == other.name and
             self.driver == other.driver and
-            self.created == other.created and
             self.labels == other.labels
         )
 
