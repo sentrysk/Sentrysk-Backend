@@ -10,6 +10,36 @@ from Agents.models import Agent
 from datetime import datetime
 ##############################################################################
 
+# Helper Functions
+##############################################################################
+def compare_documents(old_list, new_list, identifier, cls):
+    old_dict = {document[identifier]: document for document in old_list}
+    new_dict = {document[identifier]: document for document in new_list}
+    
+    # Newly Added document
+    new_document = [new_dict[identifier] for identifier in new_dict if identifier not in old_dict]
+    # Deleted document
+    deleted_document = [old_dict[identifier] for identifier in old_dict if identifier not in new_dict]
+    # Updated document and Fields
+    updated_document = {}
+
+    # Find the Updated Fields
+    for identifier in old_dict:
+        if identifier in new_dict and old_dict[identifier] != new_dict[identifier]:
+            updated_fields = {}
+            for field in cls._fields:
+                if str(old_dict[identifier][field]) != str(new_dict[identifier][field]):
+                    updated_fields[field] = {
+                        "previous_value":old_dict[identifier][field],
+                        "new_value":new_dict[identifier][field]
+                    }
+            # Add Updated Fields to Updated document Dict
+            updated_document[identifier] = updated_fields
+
+    # Return Compared Data
+    return new_document, deleted_document, updated_document
+##############################################################################
+
 
 # Models
 ##############################################################################
@@ -110,6 +140,7 @@ class DockerInfo(Document):
     networks        = ListField(EmbeddedDocumentField(Networks))
     disk_usage      = StringField()
     updated         = DateTimeField(default=datetime.utcnow)
+
 
     def serialize(self):
         # Serialize Sub Models First
