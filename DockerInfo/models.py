@@ -17,9 +17,9 @@ def compare_documents(old_list, new_list, identifier, cls):
     new_dict = {document[identifier]: document for document in new_list}
     
     # Newly Added document
-    new_document = [new_dict[identifier] for identifier in new_dict if identifier not in old_dict]
+    new_document = [new_dict[identifier].serialize() for identifier in new_dict if identifier not in old_dict]
     # Deleted document
-    deleted_document = [old_dict[identifier] for identifier in old_dict if identifier not in new_dict]
+    deleted_document = [old_dict[identifier].serialize() for identifier in old_dict if identifier not in new_dict]
     # Updated document and Fields
     updated_document = {}
 
