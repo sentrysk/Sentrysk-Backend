@@ -61,7 +61,7 @@ def get_all_system_apps_formatted():
                     apps_dict[app.name][app.version] = [sys_apps.agent.serialize()["id"]]
 
         # Serialize & Return
-        return jsonify(apps_dict) 
+        return jsonify(apps_dict)
     except Exception as e:
         return jsonify({"error":str(e)}), 500
 
