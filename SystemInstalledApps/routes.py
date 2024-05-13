@@ -35,6 +35,36 @@ def get_all_system_apps():
     except Exception as e:
         return jsonify({"error":str(e)}), 500
 
+# Get All System Apps with Agents
+@sys_apps_bp.route('/formatted', methods=['GET'])
+@auth_token_required
+def get_all_system_apps_formatted():
+    try:
+        # Get All System Apps from DB
+        all_sys_apps = SystemInstalledApps.objects()
+        # Create Apps Dict to Store Formatted Data
+        apps_dict = {}
+        # Iterate over agents 
+        for sys_apps in all_sys_apps:
+            # Iterate over apps
+            for app in sys_apps.apps:
+                # Check whether app already exist
+                if apps_dict.get(app.name):
+                    # Check whether app version already exist
+                    if apps_dict[app.name].get(app.version):
+                        apps_dict[app.name][app.version].append(sys_apps.agent.serialize()["id"])
+                    else:
+                        apps_dict[app.name][app.version] = [sys_apps.agent.serialize()["id"]]
+                else:
+                    # If not exist create new one
+                    apps_dict[app.name] = {}
+                    apps_dict[app.name][app.version] = [sys_apps.agent.serialize()["id"]]
+
+        # Serialize & Return
+        return jsonify(apps_dict) 
+    except Exception as e:
+        return jsonify({"error":str(e)}), 500
+
 # Get System Apps by Agent ID
 @sys_apps_bp.route('/<agent_id>', methods=['GET'])
 @auth_token_required
