@@ -33,6 +33,36 @@ def get_all_installed_pip_packages():
         return [info.serialize() for info in all_pip_pkgs] 
     except Exception as e:
         return jsonify({"error":str(e)}), 500
+    
+# Get All Pip Packages Formatted
+@sys_pip_pkgs_bp.route('/formatted', methods=['GET'])
+@auth_token_required
+def get_all_pip_packages_formatted():
+    try:
+        # Get All System Apps from DB
+        all_pip_pkgs = InstalledPipPackages.objects()
+        # Create Apps Dict to Store Formatted Data
+        pip_pkgs_dict = {}
+        # Iterate over agents 
+        for pip_pkgs in all_pip_pkgs:
+            # Iterate over apps
+            for pip_pkg in pip_pkgs.pip_packages:
+                # Check whether app already exist
+                if pip_pkgs_dict.get(pip_pkg.name):
+                    # Check whether app version already exist
+                    if pip_pkgs_dict[pip_pkg.name].get(pip_pkg.version):
+                        pip_pkgs_dict[pip_pkg.name][pip_pkg.version].append(pip_pkgs.agent.serialize()["id"])
+                    else:
+                        pip_pkgs_dict[pip_pkg.name][pip_pkg.version] = [pip_pkgs.agent.serialize()["id"]]
+                else:
+                    # If not exist create new one
+                    pip_pkgs_dict[pip_pkg.name] = {}
+                    pip_pkgs_dict[pip_pkg.name][pip_pkg.version] = [pip_pkgs.agent.serialize()["id"]]
+
+        # Serialize & Return
+        return jsonify(pip_pkgs_dict)
+    except Exception as e:
+        return jsonify({"error":str(e)}), 500
 
 # Get All Pip Packages by Agent ID
 @sys_pip_pkgs_bp.route('/<agent_id>', methods=['GET'])
