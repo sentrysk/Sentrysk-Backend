@@ -34,6 +34,36 @@ def get_all_installed_npm_packages():
     except Exception as e:
         return jsonify({"error":str(e)}), 500
 
+# Get All Npm Packages Formatted
+@sys_npm_pkgs_bp.route('/formatted', methods=['GET'])
+@auth_token_required
+def get_all_npm_packages_formatted():
+    try:
+        # Get All Npm Packages from DB
+        all_npm_pkgs = InstalledNpmPackages.objects()
+        # Create Npm Packages Dict to Store Formatted Data
+        npm_pkgs_dict = {}
+        # Iterate over agents 
+        for npm_pkgs in all_npm_pkgs:
+            # Iterate over npm packages
+            for npm_pkg in npm_pkgs.npm_packages:
+                # Check whether package already exist
+                if npm_pkgs_dict.get(npm_pkg.name):
+                    # Check whether package version already exist
+                    if npm_pkgs_dict[npm_pkg.name].get(npm_pkg.version):
+                        npm_pkgs_dict[npm_pkg.name][npm_pkg.version].append(npm_pkgs.agent.serialize()["id"])
+                    else:
+                        npm_pkgs_dict[npm_pkg.name][npm_pkg.version] = [npm_pkgs.agent.serialize()["id"]]
+                else:
+                    # If not exist create new one
+                    npm_pkgs_dict[npm_pkg.name] = {}
+                    npm_pkgs_dict[npm_pkg.name][npm_pkg.version] = [npm_pkgs.agent.serialize()["id"]]
+
+        # Serialize & Return
+        return jsonify(npm_pkgs_dict)
+    except Exception as e:
+        return jsonify({"error":str(e)}), 500
+
 # Get Npm Packages by Agent ID
 @sys_npm_pkgs_bp.route('/<agent_id>', methods=['GET'])
 @auth_token_required
@@ -94,7 +124,7 @@ def register():
 
                 # Create a new ChangeLog entry
                 change_log_entry = ChangeLogInstalledNpmPackages(
-                    pip_packages = npm_pkgs.id,
+                    npm_packages = npm_pkgs.id,
                     changes = changes
                 )
                 change_log_entry.save()
