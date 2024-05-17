@@ -13,6 +13,7 @@ from Session.models import Session
 from .schema import RegisterSchema,LoginSchema
 from Shared.configs import SECRET_KEY,JWT_ALG
 from Shared.validators import auth_token_required
+from .helper_funcs import get_email_by_token
 ##############################################################################
 
 # Blueprint
@@ -149,6 +150,21 @@ def get_users():
     try:
         users = User.objects()
         return [user.safe_serialize() for user in users] # Serialize & Return
+    except Exception as e:
+        return jsonify({"error":str(e)}), 500
+
+# Get User Details by Token
+@users_bp.route('/details', methods=['GET'])
+@auth_token_required
+def get_user_details_by_token():
+    try:
+        # Get JWT Token by Authorization Header
+        jwt_token = request.headers.get('Authorization')
+        # Get Email by Token
+        email = get_email_by_token(jwt_token)
+        # Get User object by Email and Safe Serialize
+        user = User.objects(email=email).first().safe_serialize()
+        return jsonify(user)
     except Exception as e:
         return jsonify({"error":str(e)}), 500
 ##############################################################################
