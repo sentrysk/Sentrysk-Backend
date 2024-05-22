@@ -22,4 +22,9 @@ class RegisterSchema(Schema):
 class LoginSchema(Schema):
     email      = fields.Email(required = True)
     password   = fields.Str(required = True)
+
+class UpdatePasswordSchema(Schema):
+    current_password    = fields.Str(required = True)
+    new_password        = fields.Str(required = True)
+    new_password_repeat = fields.Str(required = True)
 ##############################################################################
