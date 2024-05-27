@@ -31,4 +31,10 @@ class Dirs(EmbeddedDocument):
     home_dir = StringField(required=True)
     logfile  = StringField(required=True)
 
+class ScheduledJob(EmbeddedDocument):
+    time     = StringField()
+    interval = IntField()
+    unit     = StringField()
+
+
 ##############################################################################
