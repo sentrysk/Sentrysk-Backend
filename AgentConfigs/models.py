@@ -27,5 +27,8 @@ class Api(EmbeddedDocument):
     endpoints   = EmbeddedDocumentField(Endpoints, required=True)
     agent_token = StringField(required=True)
 
+class Dirs(EmbeddedDocument):
+    home_dir = StringField(required=True)
+    logfile  = StringField(required=True)
 
 ##############################################################################
