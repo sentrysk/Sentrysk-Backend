@@ -6,6 +6,7 @@ from mongoengine import (
     Document, DictField, ReferenceField, DateTimeField, ListField,
     EmbeddedDocument, EmbeddedDocumentField, StringField, IntField
 )
+from Agents.models import Agent
 from datetime import datetime
 ##############################################################################
 
@@ -46,4 +47,10 @@ class ScheduledJobs(EmbeddedDocument):
     send_npm_packages       = EmbeddedDocumentField(ScheduledJob, required=True)
     send_docker_info        = EmbeddedDocumentField(ScheduledJob, required=True)
 
+class AgentConfig(Document):
+    agent          = ReferenceField(Agent)
+    api            = EmbeddedDocumentField(Api, required=True)
+    dirs           = EmbeddedDocumentField(Dirs, required=True)
+    scheduled_jobs = EmbeddedDocumentField(ScheduledJobs, required=True)
+    updated        = DateTimeField(default=datetime.utcnow)
 ##############################################################################
