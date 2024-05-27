@@ -22,5 +22,10 @@ class Endpoints(EmbeddedDocument):
     npm_pkgs           = StringField(required=True)
     docker_info        = StringField(required=True)
 
+class Api(EmbeddedDocument):
+    base_url    = StringField(required=True)
+    endpoints   = EmbeddedDocumentField(Endpoints, required=True)
+    agent_token = StringField(required=True)
+
 
 ##############################################################################
