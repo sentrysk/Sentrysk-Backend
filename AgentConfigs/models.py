@@ -36,5 +36,14 @@ class ScheduledJob(EmbeddedDocument):
     interval = IntField()
     unit     = StringField()
 
+class ScheduledJobs(EmbeddedDocument):
+    send_system_info        = EmbeddedDocumentField(ScheduledJob, required=True)
+    send_user_info          = EmbeddedDocumentField(ScheduledJob, required=True)
+    send_installed_programs = EmbeddedDocumentField(ScheduledJob, required=True)
+    send_service_info       = EmbeddedDocumentField(ScheduledJob, required=True)
+    send_last_logons        = EmbeddedDocumentField(ScheduledJob, required=True)
+    send_pip_packages       = EmbeddedDocumentField(ScheduledJob, required=True)
+    send_npm_packages       = EmbeddedDocumentField(ScheduledJob, required=True)
+    send_docker_info        = EmbeddedDocumentField(ScheduledJob, required=True)
 
 ##############################################################################
