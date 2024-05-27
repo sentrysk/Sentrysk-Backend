@@ -86,4 +86,16 @@ class AgentConfig(Document):
     dirs           = EmbeddedDocumentField(Dirs, required=True)
     scheduled_jobs = EmbeddedDocumentField(ScheduledJobs, required=True)
     updated        = DateTimeField(default=datetime.utcnow)
+
+    def serialize(self):
+        return {
+            "agent": self.agent,
+            "api": self.api,
+            "dirs": self.dirs,
+            "scheduled_jobs": self.scheduled_jobs,
+            "updated": self.updated
+        }
+
+    def __str__(self):
+        return str(self.serialize())
 ##############################################################################
