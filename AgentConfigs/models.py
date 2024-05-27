@@ -10,6 +10,39 @@ from Agents.models import Agent
 from datetime import datetime
 ##############################################################################
 
+'''
+Current Config Style
+{
+    "api": {
+      "base_url": "http://localhost:8000",
+      "endpoints": {
+        "system_info": "/sysinfo/",
+        "user_info": "/sysusers/",
+        "installed_programs": "/sysapps/",
+        "service_info": "/sysservices/",
+        "last_logons": "/sysusers/lastlogons/",
+        "pip_pkgs": "/pippkgs/",
+        "npm_pkgs": "/npmpkgs/",
+        "docker_info": "/dockerinfo/"
+      },
+      "agent_token": "your_agent_token_here"
+    },
+    "dirs": {
+      "home_dir": "/path/to/home/directory",
+      "logfile": "logs/agent_logs.log"
+    },
+    "scheduled_jobs":{
+      "send_system_info":{"time": "00:00"},
+      "send_user_info":{"interval": 1, "unit": "minutes"},
+      "send_installed_programs": {"interval": 1, "unit": "minutes"},
+      "send_service_info": {"interval": 1, "unit": "minutes"},
+      "send_last_logons": {"interval": 1, "unit": "minutes"},
+      "send_pip_packages": {"interval": 1, "unit": "minutes"},
+      "send_npm_packages": {"interval": 1, "unit": "minutes"},
+      "send_docker_info": {"interval": 1, "unit": "minutes"}
+    }
+}
+'''
 
 # Models
 ##############################################################################
