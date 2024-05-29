@@ -6,8 +6,9 @@ from flask import Blueprint, request, jsonify
 from datetime import datetime
 from marshmallow import ValidationError
 
-from .models import AgentConfig
+from .models import AgentConfig, ChangeLogAgentConfig
 from .schema import AgentConfigRegisterSchema
+from .helper_funcs import get_changes
 from Shared.validators import agent_token_required, auth_token_required
 
 from Agents.helper_funcs import get_id_by_token
@@ -18,7 +19,6 @@ from Agents.models import Agent
 ##############################################################################
 agnt_configs_bp = Blueprint('agent_configs_blueprint', __name__)
 ##############################################################################
-
 
 # Routes
 ##############################################################################
@@ -46,8 +46,32 @@ def register():
 
     if agent_config:
         # UPDATE If Agent Config already exist
-        data["updated"] = datetime.utcnow
-        agent_config.update(**data)
+
+        # Convert to dict to compare
+        old_config = agent_config.to_mongo().to_dict()
+
+        # Create Temp object to compare
+        tmp_agnt_cfg = AgentConfig(**data)
+        tmp_agnt_cfg.agent = agent
+        tmp_agnt_cfg = tmp_agnt_cfg.to_mongo().to_dict() # Convert to dict
+        
+        changes = get_changes(old_config, tmp_agnt_cfg)
+
+        # If any changes
+        if changes:
+            # Update the existing SystemInfo document
+            data["updated"] = datetime.utcnow
+            agent_config.update(**data)
+
+            # Create a new ChangeLog entry
+            change_log_entry = ChangeLogAgentConfig(
+                agent_config = agent_config.id,
+                changes = changes
+            )
+            change_log_entry.save()
+        else:
+            # Apply only updated time
+            agent_config.update(updated=datetime.utcnow)
     else:
         # CREATE If Agent Config not exist
         try:
@@ -56,7 +80,6 @@ def register():
             agent_config.save()
         except Exception as e:
             return jsonify({'error': e}), 500
-
 
     return jsonify(
         {
