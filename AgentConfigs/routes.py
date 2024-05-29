@@ -42,7 +42,7 @@ def register():
         return jsonify({'error': e.messages}), 400
 
     # Get Agent ID by Token
-    agent_config = AgentConfig().objects(agent=agent).first()
+    agent_config = AgentConfig.objects(agent=agent).first()
 
     if agent_config:
         # UPDATE If Agent Config already exist
