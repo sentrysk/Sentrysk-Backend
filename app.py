@@ -23,6 +23,7 @@ from InformationalData.routes import inf_data_bp
 from PipPackages.routes import sys_pip_pkgs_bp
 from NpmPackages.routes import sys_npm_pkgs_bp
 from DockerInfo.routes import sys_dckr_bp
+from AgentConfigs.routes import agnt_configs_bp
 
 import socket
 ##############################################################################
@@ -62,6 +63,7 @@ app.register_blueprint(sys_srvc_bp, url_prefix='/sysservices')
 app.register_blueprint(sys_pip_pkgs_bp, url_prefix='/pippkgs')
 app.register_blueprint(sys_npm_pkgs_bp, url_prefix='/npmpkgs')
 app.register_blueprint(sys_dckr_bp, url_prefix='/dockerinfo')
+app.register_blueprint(agnt_configs_bp, url_prefix='/agentconf')
 
 app.register_blueprint(inf_data_bp, url_prefix='/inf_data')
 ##############################################################################
