@@ -3,7 +3,7 @@
 # Libraries
 ##############################################################################
 from flask import Blueprint, request, jsonify
-import json
+from datetime import datetime
 from marshmallow import ValidationError
 
 from .models import AgentConfig
@@ -46,7 +46,8 @@ def register():
 
     if agent_config:
         # UPDATE If Agent Config already exist
-        pass
+        data["updated"] = datetime.utcnow
+        agent_config.update(**data)
     else:
         # CREATE If Agent Config not exist
         try:
