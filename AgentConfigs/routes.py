@@ -8,7 +8,7 @@ from marshmallow import ValidationError
 
 from .models import AgentConfig
 from .schema import AgentConfigRegisterSchema
-from Shared.validators import auth_token_required
+from Shared.validators import agent_token_required, auth_token_required
 
 from Agents.helper_funcs import get_id_by_token
 from Agents.models import Agent
@@ -25,7 +25,7 @@ agnt_configs_bp = Blueprint('agent_configs_blueprint', __name__)
 
 # Register
 @agnt_configs_bp.route('/', methods=['POST'])
-@auth_token_required
+@agent_token_required
 def register():
     # Get Agent Token by Authorization Header
     agent_token = request.headers.get('Authorization')
