@@ -8,7 +8,11 @@ from enum import Enum,unique
 
 # Regexs
 ##############################################################################
-
+# Regular expressions optimized to prevent catastrophic backtracking
+VALID_PATH_REGEX    = r'^/[a-zA-Z0-9_/]+/$'
+VALID_DIR_REGEX     = r'^/[a-zA-Z0-9_/]+$'
+VALID_LOGFILE_REGEX = r'^[a-zA-Z0-9_/]+\.log$'
+VALID_TIME_REGEX    = r'^\d{2}:\d{2}$'
 ##############################################################################
 
 # Enums
