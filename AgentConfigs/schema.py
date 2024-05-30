@@ -6,6 +6,11 @@ from marshmallow import Schema, fields, validate
 from enum import Enum,unique
 ##############################################################################
 
+# Global Values
+##############################################################################
+MAX_LEN = 50
+##############################################################################
+
 # Regexs
 ##############################################################################
 # Regular expressions optimized to prevent catastrophic backtracking
@@ -28,14 +33,30 @@ class UnitEnum(str,Enum):
 from marshmallow import Schema, fields, validate
 
 class EndpointsSchema(Schema):
-    system_info = fields.String(required=True)
-    user_info = fields.String(required=True)
-    installed_programs = fields.String(required=True)
-    service_info = fields.String(required=True)
-    last_logons = fields.String(required=True)
-    pip_pkgs = fields.String(required=True)
-    npm_pkgs = fields.String(required=True)
-    docker_info = fields.String(required=True)
+    system_info         = fields.String(
+        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
+    )
+    user_info           = fields.String(
+        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
+    )
+    installed_programs  = fields.String(
+        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
+    )
+    service_info        = fields.String(
+        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
+    )
+    last_logons         = fields.String(
+        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
+    )
+    pip_pkgs            = fields.String(
+        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
+    )
+    npm_pkgs            = fields.String(
+        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
+    )
+    docker_info         = fields.String(
+        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
+    )
 
 class ApiSchema(Schema):
     base_url = fields.String(required=True, validate=validate.URL())
