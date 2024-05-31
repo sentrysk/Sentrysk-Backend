@@ -2,7 +2,9 @@
 
 # Libraries
 ##############################################################################
-from marshmallow import Schema, fields, validate, ValidationError
+from marshmallow import (
+    Schema, fields, validate, ValidationError, validates_schema
+)
 from enum import Enum,unique
 import uuid
 ##############################################################################
@@ -10,6 +12,17 @@ import uuid
 # Global Values
 ##############################################################################
 MAX_LEN = 50
+
+DEFAULT_ENDPOINTS = {
+    "system_info": "/sysinfo/",
+    "user_info": "/sysusers/",
+    "installed_programs": "/sysapps/",
+    "service_info": "/sysservices/",
+    "last_logons": "/sysusers/lastlogons/",
+    "pip_pkgs": "/pippkgs/",
+    "npm_pkgs": "/npmpkgs/",
+    "docker_info": "/dockerinfo/"
+}
 ##############################################################################
 
 # Regexs
@@ -45,30 +58,20 @@ def validate_uuid4(token):
 from marshmallow import Schema, fields, validate
 
 class EndpointsSchema(Schema):
-    system_info         = fields.String(
-        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
-    )
-    user_info           = fields.String(
-        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
-    )
-    installed_programs  = fields.String(
-        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
-    )
-    service_info        = fields.String(
-        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
-    )
-    last_logons         = fields.String(
-        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
-    )
-    pip_pkgs            = fields.String(
-        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
-    )
-    npm_pkgs            = fields.String(
-        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
-    )
-    docker_info         = fields.String(
-        required=True, validate=[validate.Length(max=MAX_LEN), validate.Regexp(VALID_PATH_REGEX)]
-    )
+    system_info         = fields.String(required=True)
+    user_info           = fields.String(required=True)
+    installed_programs  = fields.String(required=True)
+    service_info        = fields.String(required=True)
+    last_logons         = fields.String(required=True)
+    pip_pkgs            = fields.String(required=True)
+    npm_pkgs            = fields.String(required=True)
+    docker_info         = fields.String(required=True)
+
+    @validates_schema
+    def validate_endpoints(self, data, **kwargs):
+        for key, value in data.items():
+            if value != DEFAULT_ENDPOINTS[key]:
+                raise ValidationError(f'Value for {key} must be "{DEFAULT_ENDPOINTS[key]}".')
 
 class ApiSchema(Schema):
     base_url    = fields.String(required=True, validate=validate.URL())
