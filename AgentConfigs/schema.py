@@ -2,8 +2,9 @@
 
 # Libraries
 ##############################################################################
-from marshmallow import Schema, fields, validate
+from marshmallow import Schema, fields, validate, ValidationError
 from enum import Enum,unique
+import uuid
 ##############################################################################
 
 # Global Values
@@ -26,6 +27,17 @@ VALID_TIME_REGEX    = r'^\d{2}:\d{2}$'
 class UnitEnum(str,Enum):
     minutes   : str = "minutes"
     hours     : str = "hours"
+##############################################################################
+    
+# Helper Functions
+##############################################################################
+def validate_uuid4(token):
+    try:
+        val = uuid.UUID(token, version=4)
+        if str(val) != token:
+            raise ValidationError('Invalid token.')
+    except ValueError:
+        raise ValidationError('Invalid token.')
 ##############################################################################
 
 # Schemas
@@ -59,9 +71,9 @@ class EndpointsSchema(Schema):
     )
 
 class ApiSchema(Schema):
-    base_url = fields.String(required=True, validate=validate.URL())
-    endpoints = fields.Nested(EndpointsSchema, required=True)
-    agent_token = fields.String(required=True)
+    base_url    = fields.String(required=True, validate=validate.URL())
+    endpoints   = fields.Nested(EndpointsSchema, required=True)
+    agent_token = fields.String(required=True, validate=[validate.Length(equal=36), validate_uuid4])
 
 class DirsSchema(Schema):
     home_dir = fields.String(required=True)
