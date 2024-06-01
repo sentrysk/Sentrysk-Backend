@@ -23,6 +23,16 @@ agnt_configs_bp = Blueprint('agent_configs_blueprint', __name__)
 # Routes
 ##############################################################################
 
+# Get All Agent Configs
+@agnt_configs_bp.route('/', methods=['GET'])
+@auth_token_required
+def get_agents():
+    try:
+        agent_configs = AgentConfig.objects()
+        return [agent_config.serialize() for agent_config in agent_configs] # Serialize & Return
+    except Exception as e:
+        return jsonify({"error":str(e)}), 500
+
 # Register
 @agnt_configs_bp.route('/', methods=['POST'])
 @agent_token_required
