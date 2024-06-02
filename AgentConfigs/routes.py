@@ -26,12 +26,21 @@ agnt_configs_bp = Blueprint('agent_configs_blueprint', __name__)
 # Get All Agent Configs
 @agnt_configs_bp.route('/', methods=['GET'])
 @auth_token_required
-def get_agents():
+def get_agent_configs():
     try:
         agent_configs = AgentConfig.objects()
         return [agent_config.serialize() for agent_config in agent_configs] # Serialize & Return
     except Exception as e:
         return jsonify({"error":str(e)}), 500
+
+# Get Agent Config by ID
+@agnt_configs_bp.route('/<id>', methods=['GET'])
+def get_agent_config_by_id(id):
+    try:
+        agent_config = AgentConfig.objects(id=id).first().serialize()
+        return jsonify(agent_config)
+    except Exception as e:
+        return jsonify({"Message":"Not Found"}), 404
 
 # Register
 @agnt_configs_bp.route('/', methods=['POST'])
