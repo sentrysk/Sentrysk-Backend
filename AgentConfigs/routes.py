@@ -41,6 +41,15 @@ def get_agent_config_by_id(id):
         return jsonify(agent_config)
     except Exception as e:
         return jsonify({"Message":"Not Found"}), 404
+    
+# Get Agent Config by Agent ID
+@agnt_configs_bp.route('/<agent_id>', methods=['GET'])
+def get_agent_config_by_id(agent_id):
+    try:
+        agent_config = AgentConfig.objects(agent=agent_id).first().serialize()
+        return jsonify(agent_config)
+    except Exception as e:
+        return jsonify({"Message":"Not Found"}), 404
 
 # Register
 @agnt_configs_bp.route('/', methods=['POST'])
