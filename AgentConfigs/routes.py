@@ -28,7 +28,7 @@ agnt_configs_bp = Blueprint('agent_configs_blueprint', __name__)
 # Get All Agent Configs
 @agnt_configs_bp.route('/', methods=['GET'])
 @auth_token_required
-def get_all_configs():
+def get_all_agent_configs():
     configs = AgentConfig.objects()
     config_list = [config.to_mongo().to_dict() for config in configs]
     for config in config_list:
@@ -40,7 +40,7 @@ def get_all_configs():
 # Get Agent Config by ID
 @agnt_configs_bp.route('/<config_id>', methods=['GET'])
 @auth_token_required
-def get_config_by_id(config_id):
+def get_agent_config_by_id(config_id):
     try:
         config = AgentConfig.objects.get(id=ObjectId(config_id))
         config_dict = config.to_mongo().to_dict()
@@ -53,7 +53,7 @@ def get_config_by_id(config_id):
 # Get Agent Config by Agent ID
 @agnt_configs_bp.route('/agent/<agent_id>', methods=['GET'])
 @auth_token_required
-def get_config_by_agent_id(agent_id):
+def get_agent_config_by_agent_id(agent_id):
     try:
         config = AgentConfig.objects.get(agent_id=agent_id)
         config_dict = config.to_mongo().to_dict()
