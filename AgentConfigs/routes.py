@@ -5,6 +5,8 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
 from marshmallow import ValidationError
+from mongoengine.errors import DoesNotExist, ValidationError as MongoValidationError
+from bson.objectid import ObjectId
 
 from .models import AgentConfig, ChangeLogAgentConfig
 from .schema import AgentConfigRegisterSchema
@@ -26,32 +28,40 @@ agnt_configs_bp = Blueprint('agent_configs_blueprint', __name__)
 # Get All Agent Configs
 @agnt_configs_bp.route('/', methods=['GET'])
 @auth_token_required
-def get_agent_configs():
-    try:
-        agent_configs = AgentConfig.objects()
-        return [agent_config.serialize() for agent_config in agent_configs] # Serialize & Return
-    except Exception as e:
-        return jsonify({"error":str(e)}), 500
+def get_all_configs():
+    configs = AgentConfig.objects()
+    config_list = [config.to_mongo().to_dict() for config in configs]
+    for config in config_list:
+        config['_id'] = str(config['_id'])  # Convert ObjectId to string
+        config['agent'] = str(config['agent']) # Convert ObjectId to string
+    return jsonify(config_list), 200
+
 
 # Get Agent Config by ID
-@agnt_configs_bp.route('/<id>', methods=['GET'])
+@agnt_configs_bp.route('/<config_id>', methods=['GET'])
 @auth_token_required
-def get_agent_config_by_id(id):
+def get_config_by_id(config_id):
     try:
-        agent_config = AgentConfig.objects(id=id).first().serialize()
-        return jsonify(agent_config)
-    except Exception as e:
-        return jsonify({"Message":"Not Found"}), 404
-    
+        config = AgentConfig.objects.get(id=ObjectId(config_id))
+        config_dict = config.to_mongo().to_dict()
+        config_dict['_id'] = str(config_dict['_id'])  # Convert ObjectId to string
+        config_dict['agent'] = str(config_dict['agent']) # Convert ObjectId to string
+        return jsonify(config_dict), 200
+    except (DoesNotExist, MongoValidationError):
+        return jsonify({"error": "Config not found"}), 404
+
 # Get Agent Config by Agent ID
-@agnt_configs_bp.route('/<agent_id>', methods=['GET'])
+@agnt_configs_bp.route('/agent/<agent_id>', methods=['GET'])
 @auth_token_required
-def get_agent_config_by_agent_id(agent_id):
+def get_config_by_agent_id(agent_id):
     try:
-        agent_config = AgentConfig.objects(agent=agent_id).first().serialize()
-        return jsonify(agent_config)
-    except Exception as e:
-        return jsonify({"Message":"Not Found"}), 404
+        config = AgentConfig.objects.get(agent_id=agent_id)
+        config_dict = config.to_mongo().to_dict()
+        config_dict['_id'] = str(config_dict['_id'])  # Convert ObjectId to string
+        config_dict['agent'] = str(config_dict['agent']) # Convert ObjectId to string
+        return jsonify(config_dict), 200
+    except (DoesNotExist, MongoValidationError):
+        return jsonify({"error": "Config not found"}), 404
 
 # Register
 @agnt_configs_bp.route('/', methods=['POST'])
