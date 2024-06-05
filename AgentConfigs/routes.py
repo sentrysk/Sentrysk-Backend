@@ -134,5 +134,5 @@ def get_agent_config_changelog_by_id(config_id):
         agent_config_changelog = ChangeLogAgentConfig.objects(agent_config=config_id)
         return [info.serialize() for info in agent_config_changelog] # Serialize & Return
     except Exception as e:
-        return jsonify({"Message":"Not Found"}), 404
+        return jsonify({"Message":"Agent Config Changelog Not Found"}), 404
 ##############################################################################
