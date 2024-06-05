@@ -125,4 +125,14 @@ def register():
             'message': 'Agent Config registered successfully.',
         }
     ), 200
+
+# Get Agent Config Changelog by ID
+@agnt_configs_bp.route('/<config_id>/changelog', methods=['GET'])
+@auth_token_required
+def get_agent_config_changelog_by_id(config_id):
+    try:
+        agent_config_changelog = ChangeLogAgentConfig.objects(agent_config=config_id)
+        return [info.serialize() for info in agent_config_changelog] # Serialize & Return
+    except Exception as e:
+        return jsonify({"Message":"Not Found"}), 404
 ##############################################################################
