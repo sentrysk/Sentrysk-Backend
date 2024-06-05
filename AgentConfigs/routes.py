@@ -36,7 +36,6 @@ def get_all_agent_configs():
         config['agent'] = str(config['agent']) # Convert ObjectId to string
     return jsonify(config_list), 200
 
-
 # Get Agent Config by ID
 @agnt_configs_bp.route('/<config_id>', methods=['GET'])
 @auth_token_required
@@ -48,20 +47,20 @@ def get_agent_config_by_id(config_id):
         config_dict['agent'] = str(config_dict['agent']) # Convert ObjectId to string
         return jsonify(config_dict), 200
     except (DoesNotExist, MongoValidationError):
-        return jsonify({"error": "Config not found"}), 404
+        return jsonify({"error": "Agent Config not found"}), 404
 
 # Get Agent Config by Agent ID
 @agnt_configs_bp.route('/agent/<agent_id>', methods=['GET'])
 @auth_token_required
 def get_agent_config_by_agent_id(agent_id):
     try:
-        config = AgentConfig.objects.get(agent_id=agent_id)
+        config = AgentConfig.objects.get(agent=agent_id)
         config_dict = config.to_mongo().to_dict()
         config_dict['_id'] = str(config_dict['_id'])  # Convert ObjectId to string
         config_dict['agent'] = str(config_dict['agent']) # Convert ObjectId to string
         return jsonify(config_dict), 200
     except (DoesNotExist, MongoValidationError):
-        return jsonify({"error": "Config not found"}), 404
+        return jsonify({"error": "Agent Config not found"}), 404
 
 # Register
 @agnt_configs_bp.route('/', methods=['POST'])
