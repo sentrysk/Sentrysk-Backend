@@ -21,7 +21,8 @@ DEFAULT_ENDPOINTS = {
     "last_logons": "/sysusers/lastlogons/",
     "pip_pkgs": "/pippkgs/",
     "npm_pkgs": "/npmpkgs/",
-    "docker_info": "/dockerinfo/"
+    "docker_info": "/dockerinfo/",
+    "agent_config": "/agentconfig/"
 }
 ##############################################################################
 
@@ -55,7 +56,6 @@ def validate_uuid4(token):
 
 # Schemas
 ##############################################################################
-from marshmallow import Schema, fields, validate
 
 class EndpointsSchema(Schema):
     system_info         = fields.String(required=True)
@@ -66,6 +66,7 @@ class EndpointsSchema(Schema):
     pip_pkgs            = fields.String(required=True)
     npm_pkgs            = fields.String(required=True)
     docker_info         = fields.String(required=True)
+    agent_config        = fields.String(required=True)
 
     @validates_schema
     def validate_endpoints(self, data, **kwargs):
@@ -88,14 +89,15 @@ class ScheduledJobSchema(Schema):
     unit = fields.String(required=False, validate=validate.OneOf([val for val in UnitEnum]))
 
 class ScheduledJobsSchema(Schema):
-    send_system_info = fields.Nested(ScheduledJobSchema, required=True)
-    send_user_info = fields.Nested(ScheduledJobSchema, required=True)
+    send_system_info        = fields.Nested(ScheduledJobSchema, required=True)
+    send_user_info          = fields.Nested(ScheduledJobSchema, required=True)
     send_installed_programs = fields.Nested(ScheduledJobSchema, required=True)
-    send_service_info = fields.Nested(ScheduledJobSchema, required=True)
-    send_last_logons = fields.Nested(ScheduledJobSchema, required=True)
-    send_pip_packages = fields.Nested(ScheduledJobSchema, required=True)
-    send_npm_packages = fields.Nested(ScheduledJobSchema, required=True)
-    send_docker_info = fields.Nested(ScheduledJobSchema, required=True)
+    send_service_info       = fields.Nested(ScheduledJobSchema, required=True)
+    send_last_logons        = fields.Nested(ScheduledJobSchema, required=True)
+    send_pip_packages       = fields.Nested(ScheduledJobSchema, required=True)
+    send_npm_packages       = fields.Nested(ScheduledJobSchema, required=True)
+    send_docker_info        = fields.Nested(ScheduledJobSchema, required=True)
+    send_agent_config       = fields.Nested(ScheduledJobSchema, required=True)
 
 class AgentConfigRegisterSchema(Schema):
     api = fields.Nested(ApiSchema, required=True)
