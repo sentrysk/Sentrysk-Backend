@@ -22,7 +22,7 @@ DEFAULT_ENDPOINTS = {
     "pip_pkgs": "/pippkgs/",
     "npm_pkgs": "/npmpkgs/",
     "docker_info": "/dockerinfo/",
-    "agent_config": "/agent/config"
+    "agent_config": "/agent/config/"
 }
 ##############################################################################
 
