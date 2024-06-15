@@ -24,7 +24,7 @@ Current Config Style
         "pip_pkgs": "/pippkgs/",
         "npm_pkgs": "/npmpkgs/",
         "docker_info": "/dockerinfo/"
-        "agent_config": "/agentconfig/"
+        "agent_config": "/agent/config/"
       },
       "agent_token": "your_agent_token_here"
     },
