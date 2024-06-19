@@ -3,7 +3,7 @@
 # Libraries
 ##############################################################################
 from mongoengine import (
-    Document, StringField, DateTimeField, FloatField
+    Document, ReferenceField, StringField, DateTimeField, FloatField
 )
 
 from Agents.models import Agent
@@ -19,6 +19,7 @@ from datetime import datetime
 # Models
 ##############################################################################
 class DiskUsage(Document):
+    agent           = ReferenceField(Agent)
     timestamp       = DateTimeField(required=True,default=datetime.utcnow)
     device          = StringField(required=True)
     total_size      = FloatField(required=True)
