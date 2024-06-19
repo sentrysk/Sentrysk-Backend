@@ -21,9 +21,9 @@ from datetime import datetime
 class DiskUsage(Document):
     timestamp       = DateTimeField(required=True,default=datetime.utcnow)
     device          = StringField(required=True)
-    total           = FloatField(required=True)
-    used            = FloatField(required=True)
-    free            = FloatField(required=True)
+    total_size      = FloatField(required=True)
+    used_size       = FloatField(required=True)
+    free_size       = FloatField(required=True)
     percent         = FloatField(required=True)
 
     meta = {
