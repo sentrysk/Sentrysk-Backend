@@ -6,7 +6,7 @@ from flask import Blueprint, request, jsonify
 from datetime import datetime
 from marshmallow import ValidationError
 
-from .schema import DiskUsageSchema
+from .schema import RegisterSchema, DiskUsageSchema
 from .models import DiskUsage
 from Shared.validators import agent_token_required
 
@@ -36,17 +36,19 @@ def register():
 
     try:
         # Load and validate the JSON request using the schema
-        data = DiskUsageSchema().load(request.json)
+        data = RegisterSchema().load(request.json)
     except ValidationError as e:
         # Return validation errors as a JSON response with a 400 status code
         return jsonify({'error': e.messages}), 400
 
     # Register Disk Usage Data
     try:
-        disk_usage = DiskUsage(**data)
-        disk_usage.agent = agent
-        disk_usage.percent = (disk_usage.used_size / disk_usage.total_size) * 100
-        disk_usage.save()
+        # Iterate over disk usage data list
+        for disk_usage_data in data["disk_usage"]:
+            disk_usage = DiskUsage(**disk_usage_data)
+            disk_usage.agent = agent
+            disk_usage.percent = (disk_usage.used_size / disk_usage.total_size) * 100
+            disk_usage.save()
     except Exception as e:
         return jsonify({'error': e}), 500
 
