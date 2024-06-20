@@ -22,7 +22,8 @@ DEFAULT_ENDPOINTS = {
     "pip_pkgs": "/pippkgs/",
     "npm_pkgs": "/npmpkgs/",
     "docker_info": "/dockerinfo/",
-    "agent_config": "/agent/config/"
+    "agent_config": "/agent/config/",
+    "disk_usage": "/diskusage/"
 }
 ##############################################################################
 
@@ -67,6 +68,7 @@ class EndpointsSchema(Schema):
     npm_pkgs            = fields.String(required=True)
     docker_info         = fields.String(required=True)
     agent_config        = fields.String(required=True)
+    disk_usage          = fields.String(required=True)
 
     @validates_schema
     def validate_endpoints(self, data, **kwargs):
@@ -98,6 +100,7 @@ class ScheduledJobsSchema(Schema):
     send_npm_packages       = fields.Nested(ScheduledJobSchema, required=True)
     send_docker_info        = fields.Nested(ScheduledJobSchema, required=True)
     send_agent_config       = fields.Nested(ScheduledJobSchema, required=True)
+    send_disk_usage         = fields.Nested(ScheduledJobSchema, required=True)
 
 class AgentConfigRegisterSchema(Schema):
     api = fields.Nested(ApiSchema, required=True)
