@@ -23,8 +23,9 @@ Current Config Style
         "last_logons": "/sysusers/lastlogons/",
         "pip_pkgs": "/pippkgs/",
         "npm_pkgs": "/npmpkgs/",
-        "docker_info": "/dockerinfo/"
-        "agent_config": "/agent/config/"
+        "docker_info": "/dockerinfo/",
+        "agent_config": "/agent/config/",
+        "disk_usage": "/diskusage/"
       },
       "agent_token": "your_agent_token_here"
     },
@@ -41,7 +42,8 @@ Current Config Style
       "send_pip_packages": {"interval": 1, "unit": "minutes"},
       "send_npm_packages": {"interval": 1, "unit": "minutes"},
       "send_docker_info": {"interval": 1, "unit": "minutes"},
-      "send_agent_config": {"interval": 5, "unit": "minutes"}
+      "send_agent_config": {"interval": 1, "unit": "minutes"},
+      "send_disk_usage": {"interval": 15, "unit": "minutes"}
     }
 }
 '''
@@ -58,6 +60,7 @@ class Endpoints(EmbeddedDocument):
     npm_pkgs           = StringField(required=True)
     docker_info        = StringField(required=True)
     agent_config       = StringField(required=True)
+    disk_usage         = StringField(required=True)
 
 class Api(EmbeddedDocument):
     base_url    = StringField(required=True)
@@ -83,6 +86,7 @@ class ScheduledJobs(EmbeddedDocument):
     send_npm_packages       = EmbeddedDocumentField(ScheduledJob, required=True)
     send_docker_info        = EmbeddedDocumentField(ScheduledJob, required=True)
     send_agent_config       = EmbeddedDocumentField(ScheduledJob, required=True)
+    send_disk_usage         = EmbeddedDocumentField(ScheduledJob, required=True)
 
 class AgentConfig(Document):
     agent          = ReferenceField(Agent)
