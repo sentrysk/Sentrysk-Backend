@@ -46,7 +46,7 @@ class DiskUsage(Document):
     def serialize(self):
         return {
             'agent': str(self.agent.id),
-            'timestamp': self.timestamp.isoformat(),
+            'timestamp': self.timestamp,
             'device': self.device,
             'total_size': self.convert_size(self.total_size),
             'used_size': self.convert_size(self.used_size),
