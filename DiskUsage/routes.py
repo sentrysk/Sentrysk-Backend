@@ -5,6 +5,7 @@
 from flask import Blueprint, request, jsonify
 from datetime import datetime
 from marshmallow import ValidationError
+from bson import ObjectId
 
 from .schema import RegisterSchema, DiskUsageSchema
 from .models import DiskUsage
@@ -21,6 +22,18 @@ disk_usage_bp = Blueprint('disk_usage_blueprint', __name__)
 
 # Routes
 ##############################################################################
+
+# Disk Usage by Agent ID
+@disk_usage_bp.route('/<agent_id>', methods=['GET'])
+def get_disk_usage_by_agent_id(agent_id):
+    try:
+        # Fetch records from the DiskUsage collection filtered by agent ID
+        records = DiskUsage.objects(agent=ObjectId(agent_id))
+        # Convert the records to JSON
+        response_data = [record.serialize() for record in records]
+        return jsonify(response_data), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 404
 
 
 # Register
@@ -57,5 +70,4 @@ def register():
             'message': 'Disk Usage registered successfully.',
         }
     ), 200
-
 ##############################################################################
