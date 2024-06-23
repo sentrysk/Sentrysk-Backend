@@ -7,9 +7,9 @@ from datetime import datetime
 from marshmallow import ValidationError
 from bson import ObjectId
 
-from .schema import RegisterSchema, DiskUsageSchema
+from .schema import RegisterSchema
 from .models import DiskUsage
-from Shared.validators import agent_token_required
+from Shared.validators import agent_token_required, auth_token_required
 
 from Agents.helper_funcs import get_id_by_token
 from Agents.models import Agent
@@ -25,6 +25,7 @@ disk_usage_bp = Blueprint('disk_usage_blueprint', __name__)
 
 # Disk Usage by Agent ID
 @disk_usage_bp.route('/<agent_id>', methods=['GET'])
+@auth_token_required
 def get_disk_usage_by_agent_id(agent_id):
     try:
         # Fetch records from the DiskUsage collection filtered by agent ID
