@@ -33,6 +33,7 @@ def get_agents():
 
 # Get Agent by ID
 @agnt_bp.route('/<id>', methods=['GET'])
+@auth_token_required
 def get_agent_by_id(id):
     try:
         agent = Agent.objects(id=id).first().serialize()
