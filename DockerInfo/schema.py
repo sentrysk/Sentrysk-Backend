@@ -54,5 +54,5 @@ class RegisterSchema(Schema):
     containers      = fields.List(fields.Nested(ContainersSchema))
     volumes         = fields.List(fields.Nested(VolumesSchema))
     networks        = fields.List(fields.Nested(NetworksSchema))
-    disk_usage      = fields.Str(required=True)
+    disk_usage      = fields.Str(required=False)
 ##############################################################################
