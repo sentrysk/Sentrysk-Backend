@@ -26,7 +26,6 @@ class DiskUsageSchema(Schema):
     device      = fields.Str(required=True, validate=lambda s: re.match(VALID_DEVICE_REGEX, s) is not None)
     total_size  = fields.Float(required=True)
     used_size   = fields.Float(required=True)
-    free_size   = fields.Float(required=True)
 
     @validates('total_size')
     def validate_total(self, value):
@@ -37,11 +36,6 @@ class DiskUsageSchema(Schema):
     def validate_used(self, value):
         if value < 0:
             raise ValidationError('Used disk space must be non-negative')
-
-    @validates('free_size')
-    def validate_free(self, value):
-        if value < 0:
-            raise ValidationError('Free disk space must be non-negative')
 
         
 class RegisterSchema(Schema):
