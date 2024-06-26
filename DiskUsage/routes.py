@@ -62,6 +62,7 @@ def register():
             disk_usage = DiskUsage(**disk_usage_data)
             disk_usage.agent = agent
             disk_usage.percent = (disk_usage.used_size / disk_usage.total_size) * 100
+            disk_usage.free_size = disk_usage.total_size - disk_usage.used_size
             disk_usage.save()
     except Exception as e:
         return jsonify({'error': e}), 500
