@@ -36,8 +36,12 @@ class DiskUsageSchema(Schema):
     def validate_used(self, value):
         if value < 0:
             raise ValidationError('Used disk space must be non-negative')
-
         
+    @validates_schema
+    def validate_space(self, data, **kwargs):
+        if data['used_size'] > data['total_size']:
+            raise ValidationError('Used disk space can not bigger than total space')
+
 class RegisterSchema(Schema):
     disk_usage = fields.List(fields.Nested(DiskUsageSchema))
 ##############################################################################
