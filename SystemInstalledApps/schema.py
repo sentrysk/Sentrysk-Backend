@@ -9,7 +9,7 @@ from marshmallow import Schema, fields
 ##############################################################################
 class AppSchema(Schema):
     name         = fields.Str(required=True)
-    version      = fields.Str(required=True)
+    version      = fields.Str(required=False)
     installed_by = fields.Str(required=False)
 ##############################################################################
 
