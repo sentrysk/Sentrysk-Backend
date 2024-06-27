@@ -10,6 +10,8 @@ from marshmallow import ValidationError
 from .models import Agent
 from .schema import AgentTypeSchema, UpdateSchema
 from Shared.validators import auth_token_required
+from Users.helper_funcs import get_email_by_token
+from Users.models import User
 ##############################################################################
 
 # Blueprint
@@ -58,7 +60,20 @@ def register():
     # Generate a token for the agent
     token = str(uuid.uuid4())
 
-    agent = Agent(type=agent_type, token=token)
+    # Find user by token
+    # Get JWT Token by Authorization Header
+    jwt_token = request.headers.get('Authorization')
+    # Get Email by Token
+    user_email = get_email_by_token(jwt_token)
+    # Get User object by Email and Safe Serialize
+    user = User.objects(email=user_email).first()
+    
+    # Create Agent
+    agent = Agent(
+        type = agent_type, 
+        token = token,
+        created_by = user
+    )
     agent.save()
     
     agent_data = json.loads(agent.to_json())
