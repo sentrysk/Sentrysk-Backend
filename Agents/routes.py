@@ -43,6 +43,27 @@ def get_agent_by_id(id):
     except Exception as e:
         return jsonify({"Message":"Not Found"}), 404
 
+# Get Agent by ID with Additional Info
+@agnt_bp.route('/<id>/info', methods=['GET'])
+@auth_token_required
+def get_agent_by_id_w_info(id):
+    try:
+        agent_data = {}
+        agent = Agent.objects(id=id).first().serialize()
+        
+        from SystemInfo.models import SystemInfo
+        sys_info = SystemInfo.objects(agent=id).first().serialize()
+        
+        agent_data["type"] = agent["type"]
+        agent_data["created"] = agent["created"]
+        agent_data["created_by"] = agent["created_by"]
+        agent_data["os"] = sys_info["os"]["system"]
+        agent_data["hostname"] = sys_info["domain"]["dns_hostname"]
+
+        return jsonify(agent_data)
+    except Exception as e:
+        return jsonify({"msg":str(e)}), 404
+
 # Register
 @agnt_bp.route('/register', methods=['POST'])
 @auth_token_required
