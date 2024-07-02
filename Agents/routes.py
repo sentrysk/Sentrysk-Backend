@@ -12,6 +12,7 @@ from .schema import AgentTypeSchema, UpdateSchema
 from Shared.validators import auth_token_required
 from Users.helper_funcs import get_email_by_token
 from Users.models import User
+from SystemInfo.models import SystemInfo
 ##############################################################################
 
 # Blueprint
@@ -43,6 +44,33 @@ def get_agent_by_id(id):
     except Exception as e:
         return jsonify({"Message":"Not Found"}), 404
 
+# Get All Agents with Additional Info
+@agnt_bp.route('/info', methods=['GET'])
+@auth_token_required
+def get_agents_w_info():
+    try:
+        agents_list = []
+        agents = Agent.objects()
+        for agent in agents:
+            agent_data = {}
+            
+            agent = agent.serialize() # Serialize Agent
+            # Get Info About Agent
+            sys_info = SystemInfo.objects(agent=agent["id"]).first().serialize()
+
+            # Set Agent Data Attributes
+            agent_data["type"] = agent["type"]
+            agent_data["created"] = agent["created"]
+            agent_data["created_by"] = agent["created_by"]
+            agent_data["os"] = sys_info["os"]["system"]
+            agent_data["hostname"] = sys_info["domain"]["dns_hostname"]
+
+            agents_list.append(agent_data)
+
+        return agents_list # Serialize & Return
+    except Exception as e:
+        return jsonify({"error":str(e)}), 500
+
 # Get Agent by ID with Additional Info
 @agnt_bp.route('/<id>/info', methods=['GET'])
 @auth_token_required
@@ -50,8 +78,7 @@ def get_agent_by_id_w_info(id):
     try:
         agent_data = {}
         agent = Agent.objects(id=id).first().serialize()
-        
-        from SystemInfo.models import SystemInfo
+
         sys_info = SystemInfo.objects(agent=id).first().serialize()
         
         agent_data["type"] = agent["type"]
