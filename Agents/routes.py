@@ -84,15 +84,24 @@ def get_agents_w_info():
 def get_agent_by_id_w_info(id):
     try:
         agent_data = {}
-        agent = Agent.objects(id=id).first().serialize()
 
-        sys_info = SystemInfo.objects(agent=id).first().serialize()
+        agent = Agent.objects(id=id).first().serialize()
         
         agent_data["type"] = agent["type"]
         agent_data["created"] = agent["created"]
         agent_data["created_by"] = agent["created_by"]
-        agent_data["os"] = sys_info["os"]["system"]
-        agent_data["hostname"] = sys_info["domain"]["dns_hostname"]
+
+        # Get Info About Agent
+        try:
+            sys_info = SystemInfo.objects(agent=id).first().serialize()
+
+            agent_data["os"] = sys_info["os"]["system"]
+            agent_data["hostname"] = sys_info["domain"]["dns_hostname"]
+        except Exception as e:
+            # If get an error set as empty string
+            agent_data["os"] = ""
+            agent_data["hostname"] = ""
+
 
         return jsonify(agent_data)
     except Exception as e:
