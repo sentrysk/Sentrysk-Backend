@@ -55,15 +55,22 @@ def get_agents_w_info():
             agent_data = {}
             
             agent = agent.serialize() # Serialize Agent
-            # Get Info About Agent
-            sys_info = SystemInfo.objects(agent=agent["id"]).first().serialize()
 
             # Set Agent Data Attributes
             agent_data["type"] = agent["type"]
             agent_data["created"] = agent["created"]
             agent_data["created_by"] = agent["created_by"]
-            agent_data["os"] = sys_info["os"]["system"]
-            agent_data["hostname"] = sys_info["domain"]["dns_hostname"]
+
+            # Get Info About Agent
+            try:
+                sys_info = SystemInfo.objects(agent=agent["id"]).first().serialize()
+
+                agent_data["os"] = sys_info["os"]["system"]
+                agent_data["hostname"] = sys_info["domain"]["dns_hostname"]
+            except Exception as e:
+                # If get an error set as empty string
+                agent_data["os"] = ""
+                agent_data["hostname"] = ""
 
             agents_list.append(agent_data)
 
