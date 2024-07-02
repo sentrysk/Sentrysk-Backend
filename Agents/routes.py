@@ -57,6 +57,7 @@ def get_agents_w_info():
             agent = agent.serialize() # Serialize Agent
 
             # Set Agent Data Attributes
+            agent_data["id"] = agent["id"]
             agent_data["type"] = agent["type"]
             agent_data["created"] = agent["created"]
             agent_data["created_by"] = agent["created_by"]
@@ -87,6 +88,8 @@ def get_agent_by_id_w_info(id):
 
         agent = Agent.objects(id=id).first().serialize()
         
+        # Set Agent Data Attributes
+        agent_data["id"] = agent["id"]
         agent_data["type"] = agent["type"]
         agent_data["created"] = agent["created"]
         agent_data["created_by"] = agent["created_by"]
