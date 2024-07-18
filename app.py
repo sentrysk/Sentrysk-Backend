@@ -25,6 +25,7 @@ from NpmPackages.routes import sys_npm_pkgs_bp
 from DockerInfo.routes import sys_dckr_bp
 from AgentConfigs.routes import agnt_configs_bp
 from DiskUsage.routes import disk_usage_bp
+from MemoryUsage.routes import memory_usage_bp
 
 import socket
 ##############################################################################
@@ -66,6 +67,7 @@ app.register_blueprint(sys_npm_pkgs_bp, url_prefix='/npmpkgs')
 app.register_blueprint(sys_dckr_bp, url_prefix='/dockerinfo')
 app.register_blueprint(agnt_configs_bp, url_prefix='/agent/config')
 app.register_blueprint(disk_usage_bp, url_prefix='/diskusage')
+app.register_blueprint(memory_usage_bp, url_prefix='/memusage')
 
 app.register_blueprint(inf_data_bp, url_prefix='/inf_data')
 ##############################################################################
