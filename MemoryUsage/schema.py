@@ -10,7 +10,7 @@ from marshmallow import (
 
 # Schemas
 ##############################################################################
-class MemoryUsageSchema(Schema):
+class RegisterSchema(Schema):
     total_size  = fields.Float(required=True)
     used_size   = fields.Float(required=True)
 
