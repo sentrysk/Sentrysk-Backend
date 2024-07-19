@@ -69,6 +69,7 @@ class EndpointsSchema(Schema):
     docker_info         = fields.String(required=True)
     agent_config        = fields.String(required=True)
     disk_usage          = fields.String(required=True)
+    memory_usage        = fields.String(required=True)
 
     @validates_schema
     def validate_endpoints(self, data, **kwargs):
@@ -101,6 +102,7 @@ class ScheduledJobsSchema(Schema):
     send_docker_info        = fields.Nested(ScheduledJobSchema, required=True)
     send_agent_config       = fields.Nested(ScheduledJobSchema, required=True)
     send_disk_usage         = fields.Nested(ScheduledJobSchema, required=True)
+    send_memory_usage       = fields.Nested(ScheduledJobSchema, required=True)
 
 class AgentConfigRegisterSchema(Schema):
     api = fields.Nested(ApiSchema, required=True)
