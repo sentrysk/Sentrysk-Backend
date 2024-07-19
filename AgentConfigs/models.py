@@ -25,7 +25,8 @@ Current Config Style
         "npm_pkgs": "/npmpkgs/",
         "docker_info": "/dockerinfo/",
         "agent_config": "/agent/config/",
-        "disk_usage": "/diskusage/"
+        "disk_usage": "/diskusage/",
+        "memory_usage": "/memusage/"
       },
       "agent_token": "your_agent_token_here"
     },
@@ -43,7 +44,8 @@ Current Config Style
       "send_npm_packages": {"interval": 1, "unit": "minutes"},
       "send_docker_info": {"interval": 1, "unit": "minutes"},
       "send_agent_config": {"interval": 1, "unit": "minutes"},
-      "send_disk_usage": {"interval": 15, "unit": "minutes"}
+      "send_disk_usage": {"interval": 15, "unit": "minutes"},
+      "send_memory_usage": {"interval": 5, "unit": "minutes"}
     }
 }
 '''
@@ -61,6 +63,7 @@ class Endpoints(EmbeddedDocument):
     docker_info        = StringField(required=True)
     agent_config       = StringField(required=True)
     disk_usage         = StringField(required=True)
+    memory_usage       = StringField(required=True)
 
 class Api(EmbeddedDocument):
     base_url    = StringField(required=True)
@@ -87,6 +90,7 @@ class ScheduledJobs(EmbeddedDocument):
     send_docker_info        = EmbeddedDocumentField(ScheduledJob, required=True)
     send_agent_config       = EmbeddedDocumentField(ScheduledJob, required=True)
     send_disk_usage         = EmbeddedDocumentField(ScheduledJob, required=True)
+    send_memory_usage       = EmbeddedDocumentField(ScheduledJob, required=True)
 
 class AgentConfig(Document):
     agent          = ReferenceField(Agent)
