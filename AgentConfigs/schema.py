@@ -23,7 +23,8 @@ DEFAULT_ENDPOINTS = {
     "npm_pkgs": "/npmpkgs/",
     "docker_info": "/dockerinfo/",
     "agent_config": "/agent/config/",
-    "disk_usage": "/diskusage/"
+    "disk_usage": "/diskusage/",
+    "memory_usage": "/memusage/"
 }
 ##############################################################################
 
