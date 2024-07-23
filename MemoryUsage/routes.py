@@ -23,6 +23,19 @@ memory_usage_bp = Blueprint('memory_usage_blueprint', __name__)
 # Routes
 ##############################################################################
 
+# Get Memory Usage by Agent ID
+@memory_usage_bp.route('/<agent_id>', methods=['GET'])
+@auth_token_required
+def get_memory_usage_by_agent_id(agent_id):
+    try:
+        # Fetch records from the MemoryUsage collection filtered by agent ID
+        records = MemoryUsage.objects(agent=ObjectId(agent_id))
+        # Convert the records to JSON
+        response_data = [record.serialize() for record in records]
+        return jsonify(response_data), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 404
+
 # Register
 @memory_usage_bp.route('/', methods=['POST'])
 @agent_token_required
