@@ -23,6 +23,19 @@ cpu_usage_bp = Blueprint('cpu_usage_blueprint', __name__)
 # Routes
 ##############################################################################
 
+# Get CPU Usage by Agent ID
+@cpu_usage_bp.route('/<agent_id>', methods=['GET'])
+@auth_token_required
+def get_cpu_usage_by_agent_id(agent_id):
+    try:
+        # Fetch records from the CpuUsage collection filtered by agent ID
+        records = CpuUsage.objects(agent=ObjectId(agent_id))
+        # Convert the records to JSON
+        response_data = [record.serialize() for record in records]
+        return jsonify(response_data), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 404
+
 # Register
 @cpu_usage_bp.route('/', methods=['POST'])
 @agent_token_required
