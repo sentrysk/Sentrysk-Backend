@@ -27,7 +27,7 @@ class CpuUsage(Document):
         return {
             'agent': str(self.agent.id),
             'timestamp': self.timestamp,
-            'cpu_usage': self.convert_size(self.used_size),
+            'cpu_usage': self.used_size,
         }
     
     def __str__(self):
