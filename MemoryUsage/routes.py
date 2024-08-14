@@ -23,6 +23,17 @@ memory_usage_bp = Blueprint('memory_usage_blueprint', __name__)
 # Routes
 ##############################################################################
 
+# Get Latest Memory Usage by Agent ID
+@memory_usage_bp.route('/<agent_id>/latest', methods=['GET'])
+@auth_token_required
+def get_latest_memory_usage_by_agent_id(agent_id):
+    try:
+        # Fetch latest record from the MemoryUsage collection filtered by agent ID
+        record = MemoryUsage.objects(agent=ObjectId(agent_id)).order_by('-timestamp').first()
+        return jsonify(record.serialize()), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 404
+
 # Get Memory Usage by Agent ID
 @memory_usage_bp.route('/<agent_id>', methods=['GET'])
 @auth_token_required
