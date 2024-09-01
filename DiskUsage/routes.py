@@ -30,19 +30,22 @@ def get_latest_disk_usage_by_agent_id(agent_id):
     try:
         # Fetch devices from the DiskUsage collection filtered by agent ID
         devices = DiskUsage.objects(agent=ObjectId(agent_id)).distinct('device')
-        # Create Usage List
-        disk_usage_list = []
-        # Iterate over devices
-        for device in devices:
-            # Get latest usage for every device
-            latest_usage = DiskUsage.objects(
-                agent  = ObjectId(agent_id),
-                device = device
-            ).order_by('-timestamp').first()
-            # Append usage data to list
-            disk_usage_list.append(latest_usage.serialize())
-        
-        return jsonify(disk_usage_list),200
+
+        if devices:
+            # Create Usage List
+            disk_usage_list = []
+            # Iterate over devices
+            for device in devices:
+                # Get latest usage for every device
+                latest_usage = DiskUsage.objects(
+                    agent  = ObjectId(agent_id),
+                    device = device
+                ).order_by('-timestamp').first()
+                # Append usage data to list
+                disk_usage_list.append(latest_usage.serialize())
+            
+            return jsonify(disk_usage_list),200
+        return jsonify({'Error':'Latest disk usage not found'}),404
     except Exception as e:
         return jsonify({'error': str(e)}), 404
 
