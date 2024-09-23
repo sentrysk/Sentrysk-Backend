@@ -24,7 +24,8 @@ DEFAULT_ENDPOINTS = {
     "docker_info": "/dockerinfo/",
     "agent_config": "/agent/config/",
     "disk_usage": "/diskusage/",
-    "memory_usage": "/memusage/"
+    "memory_usage": "/memusage/",
+    "cpu_usage": "/cpu_usage/"
 }
 ##############################################################################
 
@@ -71,6 +72,7 @@ class EndpointsSchema(Schema):
     agent_config        = fields.String(required=True)
     disk_usage          = fields.String(required=True)
     memory_usage        = fields.String(required=True)
+    cpu_usage           = fields.String(required=True)
 
     @validates_schema
     def validate_endpoints(self, data, **kwargs):
@@ -104,6 +106,7 @@ class ScheduledJobsSchema(Schema):
     send_agent_config       = fields.Nested(ScheduledJobSchema, required=True)
     send_disk_usage         = fields.Nested(ScheduledJobSchema, required=True)
     send_memory_usage       = fields.Nested(ScheduledJobSchema, required=True)
+    send_cpu_usage          = fields.Nested(ScheduledJobSchema, required=True)
 
 class AgentConfigRegisterSchema(Schema):
     api = fields.Nested(ApiSchema, required=True)
